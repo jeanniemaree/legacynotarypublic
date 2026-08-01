@@ -1,10 +1,20 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Car, Building2, MapPin, PhoneCall, FileText, CheckCircle, Clock } from 'lucide-react';
+import { Menu, X, Car, Building2, MapPin, PhoneCall, FileText, CheckCircle, Clock, ShieldCheck, Star } from 'lucide-react';
 import { SEOHead } from './components/SEOHead';
+import { FeeEstimator } from './components/FeeEstimator';
+import { ServiceAreaMatrix } from './components/ServiceAreaMatrix';
+import { FAQSection } from './components/FAQSection';
+import { ReviewsSection } from './components/ReviewsSection';
+import { LegalDisclaimer } from './components/LegalDisclaimer';
+import { MobileCallBar } from './components/MobileCallBar';
+import { PrivacyModal } from './components/PrivacyModal';
+import { TermsModal } from './components/TermsModal';
 
 function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+  const [isTermsOpen, setIsTermsOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,241 +24,312 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const bookingUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeFGHvwVwHGdY4qKWPtPrZry7vl7EoU-xR6Vp96HBEdaibV_g/viewform";
+
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-gray-50 text-gray-800">
+    <div className="min-h-screen flex flex-col font-sans bg-gray-50 text-gray-800 pb-16 md:pb-0">
       <SEOHead />
       
-      {/* Navigation */}
-      <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'glass-dark py-3 shadow-lg' : 'bg-transparent py-5'}`}>
+      {/* Navigation Bar */}
+      <nav 
+        className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'glass-dark py-3 shadow-lg' : 'bg-primary py-5 border-b border-purple-900/50'}`}
+        aria-label="Main Navigation"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-          <div className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-            <span className="text-secondary">Legacy</span> Notary
-          </div>
           
-          {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-8 text-white">
-            <a href="#services" className="hover:text-secondary transition-colors text-sm font-medium uppercase tracking-wider">Services</a>
-            <a href="#about" className="hover:text-secondary transition-colors text-sm font-medium uppercase tracking-wider">Meet Jeannie</a>
-            <a href="#pricing" className="hover:text-secondary transition-colors text-sm font-medium uppercase tracking-wider">Pricing</a>
-            <a href="tel:9795291312" className="bg-secondary text-primary px-5 py-2 rounded-full font-bold hover:bg-yellow-400 transition-transform transform hover:scale-105 shadow-md">Call Now</a>
+          <a href="#" className="text-2xl font-extrabold text-white tracking-tight flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-secondary rounded-lg px-1">
+            <span className="text-secondary">Legacy</span> Notary
+          </a>
+          
+          {/* Desktop Links */}
+          <div className="hidden md:flex items-center space-x-7 text-white">
+            <a href="#services" className="hover:text-secondary transition-colors text-sm font-semibold uppercase tracking-wider">Services</a>
+            <a href="#estimator" className="hover:text-secondary transition-colors text-sm font-semibold uppercase tracking-wider">Fee Calculator</a>
+            <a href="#service-area" className="hover:text-secondary transition-colors text-sm font-semibold uppercase tracking-wider">Service Area</a>
+            <a href="#about" className="hover:text-secondary transition-colors text-sm font-semibold uppercase tracking-wider">Meet Jeannie</a>
+            <a href="#faq" className="hover:text-secondary transition-colors text-sm font-semibold uppercase tracking-wider">FAQ</a>
+            <a 
+              href="tel:9795291312" 
+              className="bg-secondary text-primary px-5 py-2 rounded-full font-extrabold hover:bg-yellow-400 transition-transform transform hover:scale-105 shadow-md flex items-center gap-2"
+            >
+              <PhoneCall size={16} /> (979) 529-1312
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
-            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-white">
+            <button 
+              type="button"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
+              className="text-white p-2 rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-secondary"
+              aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={isMobileMenuOpen}
+            >
               {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Dropdown Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden glass-dark absolute w-full top-full left-0 border-t border-white/10 flex flex-col p-4 shadow-xl">
-            <a href="#services" onClick={() => setIsMobileMenuOpen(false)} className="text-white py-3 border-b border-white/10 hover:text-secondary">Services</a>
-            <a href="#about" onClick={() => setIsMobileMenuOpen(false)} className="text-white py-3 border-b border-white/10 hover:text-secondary">Meet Jeannie</a>
-            <a href="#pricing" onClick={() => setIsMobileMenuOpen(false)} className="text-white py-3 border-b border-white/10 hover:text-secondary">Pricing</a>
-            <a href="tel:9795291312" className="text-center bg-secondary text-primary font-bold py-3 mt-4 rounded-lg">Call Now: (979) 529-1312</a>
+          <div className="md:hidden glass-dark absolute w-full top-full left-0 border-t border-white/10 flex flex-col p-4 shadow-2xl">
+            <a href="#services" onClick={() => setIsMobileMenuOpen(false)} className="text-white py-3 border-b border-white/10 hover:text-secondary font-medium">Services</a>
+            <a href="#estimator" onClick={() => setIsMobileMenuOpen(false)} className="text-white py-3 border-b border-white/10 hover:text-secondary font-medium">Fee Calculator</a>
+            <a href="#service-area" onClick={() => setIsMobileMenuOpen(false)} className="text-white py-3 border-b border-white/10 hover:text-secondary font-medium">Service Area</a>
+            <a href="#about" onClick={() => setIsMobileMenuOpen(false)} className="text-white py-3 border-b border-white/10 hover:text-secondary font-medium">Meet Jeannie</a>
+            <a href="#faq" onClick={() => setIsMobileMenuOpen(false)} className="text-white py-3 border-b border-white/10 hover:text-secondary font-medium">FAQ</a>
+            <a href="tel:9795291312" className="text-center bg-secondary text-primary font-bold py-3 mt-4 rounded-xl flex items-center justify-center gap-2">
+              <PhoneCall size={18} /> Call Now: (979) 529-1312
+            </a>
           </div>
         )}
       </nav>
 
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-primary text-white">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary via-purple-900 to-black opacity-90 z-0"></div>
+      {/* Main Content Area */}
+      <main id="main-content">
         
-        {/* Subtle background pattern/glow */}
-        <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full bg-secondary/20 blur-[120px] z-0"></div>
-        <div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] rounded-full bg-accent/20 blur-[100px] z-0"></div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8 animate-fade-in-up">
-            <div className="inline-block border border-secondary/50 rounded-full px-4 py-1 text-secondary text-sm font-semibold tracking-wide uppercase">
-              Professional Mobile Notary Services
-            </div>
-            <h1 className="text-5xl lg:text-7xl font-extrabold leading-tight">
-              Protecting Signatures.<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-yellow-200">Preserving Legacies.</span>
-            </h1>
-            <p className="text-lg lg:text-xl text-gray-300 max-w-xl leading-relaxed">
-              Professional mobile notary services serving Brazoria, Matagorda, Galveston, and Harris Counties. I travel to your home, office, hospital, nursing facility, or another mutually agreed location.
-            </p>
-            <div className="flex flex-wrap gap-4 pt-4">
-              <a href="https://docs.google.com/forms/d/e/1FAIpQLSeFGHvwVwHGdY4qKWPtPrZry7vl7EoU-xR6Vp96HBEdaibV_g/viewform" className="bg-secondary text-primary font-bold text-lg px-8 py-4 rounded-full shadow-lg hover:shadow-secondary/30 transition-all transform hover:-translate-y-1">
-                Book Appointment
-              </a>
-              <a href="sms:+19795291312?body=Hi%20Jeannie!%20I%20need%20a%20mobile%20notary." className="glass text-white font-bold text-lg px-8 py-4 rounded-full shadow-lg hover:bg-white/20 transition-all transform hover:-translate-y-1 flex items-center gap-2">
-                <PhoneCall size={20} /> Text Now
-              </a>
-            </div>
-          </div>
+        {/* Hero Section */}
+        <section className="relative pt-32 pb-20 lg:pt-44 lg:pb-32 overflow-hidden bg-primary text-white">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary via-purple-950 to-black opacity-95 z-0"></div>
           
-          <div className="relative hidden lg:block">
-            <div className="absolute inset-0 bg-gradient-to-tr from-secondary to-accent rounded-3xl transform rotate-3 scale-105 opacity-50 blur-lg"></div>
-            <img 
-              src="/images/Headshot.jpeg" 
-              alt="Jeannie Hernandez" 
-              className="relative z-10 w-full max-w-md mx-auto rounded-3xl shadow-2xl border-4 border-white/10 object-cover"
-            />
-          </div>
-        </div>
-      </section>
+          {/* Ambient Glow Effects */}
+          <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full bg-secondary/15 blur-[120px] pointer-events-none z-0"></div>
+          <div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] rounded-full bg-purple-600/20 blur-[100px] pointer-events-none z-0"></div>
 
-      {/* Trust Bar */}
-      <div className="bg-white border-b border-gray-200 shadow-sm py-6">
-        <div className="max-w-7xl mx-auto px-4 flex flex-wrap justify-center gap-6 lg:gap-12 text-sm lg:text-base font-semibold text-gray-600">
-          <div className="flex items-center gap-2"><Car className="text-primary" size={20}/> Mobile Service</div>
-          <div className="flex items-center gap-2"><Building2 className="text-primary" size={20}/> Hospitals</div>
-          <div className="flex items-center gap-2"><Clock className="text-primary" size={20}/> Evening Appointments</div>
-          <div className="flex items-center gap-2"><CheckCircle className="text-primary" size={20}/> Tap to Pay Accepted</div>
-          <div className="flex items-center gap-2"><MapPin className="text-primary" size={20}/> 4 Counties Served</div>
-        </div>
-      </div>
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-12 items-center">
+            
+            <div className="lg:col-span-7 space-y-8 animate-fade-in-up">
+              <div className="inline-flex items-center gap-2 border border-secondary/60 bg-secondary/10 rounded-full px-4 py-1.5 text-secondary text-xs sm:text-sm font-semibold tracking-wide uppercase">
+                <ShieldCheck size={16} /> Commissioned Texas Mobile Notary
+              </div>
+              
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight">
+                Protecting Signatures.<br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary via-yellow-300 to-yellow-100">
+                  Preserving Legacies.
+                </span>
+              </h1>
+              
+              <p className="text-lg lg:text-xl text-gray-300 max-w-2xl leading-relaxed">
+                Professional mobile notary services serving <strong>Brazoria, Matagorda, Galveston, and Harris Counties</strong>. I travel directly to your home, workplace, hospital room, nursing facility, or public meeting place.
+              </p>
+              
+              <div className="flex flex-wrap gap-4 pt-2">
+                <a 
+                  href={bookingUrl} 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-secondary text-primary font-bold text-base sm:text-lg px-8 py-4 rounded-full shadow-xl hover:bg-yellow-400 transition-all transform hover:-translate-y-1 flex items-center gap-2"
+                >
+                  Book Appointment
+                </a>
 
-      {/* About Section */}
-      <section id="about" className="py-20 lg:py-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            {/* Mobile Image */}
-            <div className="lg:hidden mb-10">
-              <img 
-                src="/images/Headshot.jpeg" 
-                alt="Jeannie Hernandez" 
-                className="w-full max-w-sm mx-auto rounded-3xl shadow-xl"
-              />
+                <a 
+                  href="sms:+19795291312?body=Hi%20Jeannie!%20I%20need%20a%20mobile%20notary." 
+                  className="glass text-white font-bold text-base sm:text-lg px-8 py-4 rounded-full shadow-lg hover:bg-white/20 transition-all transform hover:-translate-y-1 flex items-center gap-2 border border-white/30"
+                >
+                  <PhoneCall size={20} className="text-secondary" /> Text Now
+                </a>
+              </div>
+
+              {/* Quick Trust Badges */}
+              <div className="pt-6 border-t border-white/10 flex flex-wrap items-center gap-6 text-xs sm:text-sm text-gray-300">
+                <div className="flex items-center gap-1.5 text-yellow-400 font-semibold">
+                  <Star size={16} className="fill-yellow-400" /> 5.0 Star Rated Mobile Notary
+                </div>
+                <div>• Hospital & Bedside Visits</div>
+                <div>• Contactless Tap to Pay</div>
+              </div>
             </div>
             
-            <div className="space-y-6">
-              <h2 className="text-4xl font-extrabold text-primary">Meet Jeannie</h2>
-              <div className="w-20 h-1 bg-secondary rounded"></div>
-              <p className="text-lg text-gray-700 leading-relaxed">
-                Hi, I'm Jeannie Hernandez, a commissioned Texas Notary Public dedicated to providing reliable, professional, and convenient mobile notary services throughout Brazoria, Matagorda, Galveston, and Harris Counties.
-              </p>
-              <p className="text-lg text-gray-700 leading-relaxed">
-                I understand that notarizing important documents often happens during life's biggest moments. Whether you're purchasing a home, handling estate paperwork, completing healthcare documents, or finalizing business agreements, I strive to make the process smooth, accurate, and stress-free.
-              </p>
-              <p className="text-lg text-gray-700 leading-relaxed">
-                I travel to homes, offices, hospitals, nursing facilities, correctional facilities, and other mutually agreed locations to provide prompt and dependable service when and where you need it.
-              </p>
+            {/* Desktop Hero Image */}
+            <div className="lg:col-span-5 relative hidden lg:block">
+              <div className="absolute inset-0 bg-gradient-to-tr from-secondary to-purple-600 rounded-3xl transform rotate-3 scale-105 opacity-40 blur-xl"></div>
+              <img 
+                src="/images/Headshot.jpeg" 
+                alt="Jeannie Hernandez - Commissioned Texas Notary Public" 
+                width="400"
+                height="500"
+                decoding="async"
+                className="relative z-10 w-full max-w-md mx-auto rounded-3xl shadow-2xl border-4 border-white/20 object-cover aspect-[4/5]"
+              />
             </div>
 
-            <div className="bg-primary text-white rounded-3xl p-10 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/20 rounded-bl-full"></div>
-              <h3 className="text-3xl font-bold mb-6">My Commitment to You</h3>
-              <ul className="space-y-6">
-                <li className="flex gap-4">
-                  <CheckCircle className="text-secondary shrink-0 mt-1" size={24}/>
-                  <p>Every client deserves professionalism, patience, and respect.</p>
-                </li>
-                <li className="flex gap-4">
-                  <CheckCircle className="text-secondary shrink-0 mt-1" size={24}/>
-                  <p>Clear communication, transparent pricing, and attention to detail.</p>
-                </li>
-                <li className="flex gap-4">
-                  <CheckCircle className="text-secondary shrink-0 mt-1" size={24}/>
-                  <p>I arrive prepared and work hard to earn your trust.</p>
-                </li>
-              </ul>
-            </div>
+          </div>
+        </section>
+
+        {/* Mandatory Legal Disclaimer Bar */}
+        <LegalDisclaimer />
+
+        {/* Trust Highlight Bar */}
+        <div className="bg-white border-b border-gray-200 shadow-sm py-5">
+          <div className="max-w-7xl mx-auto px-4 flex flex-wrap justify-center gap-6 lg:gap-12 text-sm lg:text-base font-semibold text-gray-700">
+            <div className="flex items-center gap-2"><Car className="text-primary" size={20}/> Mobile Travel Service</div>
+            <div className="flex items-center gap-2"><Building2 className="text-primary" size={20}/> Hospitals & Care Homes</div>
+            <div className="flex items-center gap-2"><Clock className="text-primary" size={20}/> Evening & Weekend Visits</div>
+            <div className="flex items-center gap-2"><CheckCircle className="text-primary" size={20}/> Tap to Pay / Credit Accepted</div>
+            <div className="flex items-center gap-2"><MapPin className="text-primary" size={20}/> 4 Texas Counties</div>
           </div>
         </div>
-      </section>
 
-      {/* Services Section */}
-      <section id="services" className="py-20 lg:py-32 bg-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-4xl font-extrabold text-primary mb-4">Comprehensive Services</h2>
-            <div className="w-24 h-1 bg-secondary mx-auto rounded"></div>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { icon: FileText, title: "Real Estate Closings", desc: "Purchase, refinance, HELOC, seller packages, and loan signings." },
-              { icon: CheckCircle, title: "General Notary Work", desc: "Affidavits, powers of attorney, wills, acknowledgments, and jurats." },
-              { icon: Building2, title: "Hospital & Nursing Visits", desc: "Compassionate mobile notarizations for patients and families." },
-              { icon: FileText, title: "Business & Commercial", desc: "Business contracts, employment forms, and corporate documents." },
-              { icon: Car, title: "Mobile Service", desc: "I travel to your home, office, coffee shop, hospital, or another agreed location." },
-              { icon: Clock, title: "Evening & Weekend", desc: "Flexible scheduling when traditional office hours don't work." }
-            ].map((s, i) => (
-              <div key={i} className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow border border-gray-100 group">
-                <div className="w-14 h-14 bg-primary/5 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
-                  <s.icon className="text-primary group-hover:text-secondary transition-colors" size={28} />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{s.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{s.desc}</p>
+        {/* Meet Jeannie Section */}
+        <section id="about" className="py-20 lg:py-28 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-16 items-center">
+              
+              {/* Mobile Image */}
+              <div className="lg:hidden">
+                <img 
+                  src="/images/Headshot.jpeg" 
+                  alt="Jeannie Hernandez" 
+                  width="400"
+                  height="500"
+                  decoding="async"
+                  className="w-full max-w-sm mx-auto rounded-3xl shadow-xl border-2 border-gray-100 object-cover aspect-[4/5]"
+                />
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+              
+              <div className="space-y-6">
+                <span className="text-secondary font-bold text-xs uppercase tracking-widest bg-primary/10 px-3 py-1 rounded-full">
+                  About Legacy Notary Public
+                </span>
+                <h2 className="text-3xl sm:text-5xl font-extrabold text-primary tracking-tight">Meet Jeannie</h2>
+                <div className="w-20 h-1.5 bg-secondary rounded-full"></div>
+                
+                <p className="text-lg text-gray-700 leading-relaxed">
+                  Hi, I'm <strong>Jeannie Hernandez</strong>, a commissioned Texas Notary Public dedicated to providing reliable, professional, and convenient mobile notary services throughout Brazoria, Matagorda, Galveston, and Harris Counties.
+                </p>
+                <p className="text-lg text-gray-700 leading-relaxed">
+                  I understand that notarizing important documents often happens during life's biggest moments. Whether you're purchasing a home, handling estate paperwork, completing healthcare documents, or finalizing business agreements, I strive to make the process smooth, accurate, and stress-free.
+                </p>
+                <p className="text-lg text-gray-700 leading-relaxed">
+                  I travel directly to homes, offices, hospitals, nursing facilities, correctional facilities, and other mutually agreed locations when and where you need service.
+                </p>
+              </div>
 
-      {/* Pricing Section */}
-      <section id="pricing" className="py-20 lg:py-32">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-extrabold text-primary mb-4">Transparent Pricing</h2>
-          <div className="w-24 h-1 bg-secondary mx-auto rounded mb-12"></div>
-          
-          <div className="bg-white rounded-3xl p-8 lg:p-12 shadow-2xl border-t-4 border-secondary text-left relative overflow-hidden">
-             <div className="absolute top-0 right-0 p-6 opacity-10">
-               <FileText size={100} />
-             </div>
-             
-             <div className="relative z-10 grid md:grid-cols-2 gap-12">
-               <div>
-                 <h3 className="text-2xl font-bold text-gray-900 mb-6">Texas Notary Fees</h3>
-                 <div className="space-y-4">
-                   <div className="flex justify-between items-center border-b border-gray-100 pb-4">
-                     <span className="text-gray-600 font-medium">First notarized signature</span>
-                     <span className="text-xl font-bold text-primary">$10</span>
-                   </div>
-                   <div className="flex justify-between items-center border-b border-gray-100 pb-4">
-                     <span className="text-gray-600 font-medium">Each additional signature</span>
-                     <span className="text-xl font-bold text-primary">$1</span>
-                   </div>
-                 </div>
-               </div>
-               
-               <div>
-                 <h3 className="text-2xl font-bold text-gray-900 mb-6">After Hours Fees</h3>
-                 <div className="space-y-4">
-                   <div className="flex justify-between items-center border-b border-gray-100 pb-4">
-                     <span className="text-gray-600 font-medium">After Hours (5PM – 9PM)</span>
-                     <span className="text-xl font-bold text-primary">+$15</span>
-                   </div>
-                   <div className="flex justify-between items-center border-b border-gray-100 pb-4">
-                     <span className="text-gray-600 font-medium">After 9 PM</span>
-                     <span className="text-xl font-bold text-primary">+$30</span>
-                   </div>
-                 </div>
-               </div>
-             </div>
-             
-             <div className="mt-12 bg-gray-50 rounded-xl p-6 border border-gray-100">
-               <p className="text-sm text-gray-500 italic text-center">
-                 * Additional travel fees may apply depending on distance. Please request a quote for exact pricing for your location.
-               </p>
-             </div>
+              <div className="bg-gradient-to-br from-primary to-purple-950 text-white rounded-3xl p-8 sm:p-10 shadow-2xl relative overflow-hidden border border-purple-800">
+                <div className="absolute top-0 right-0 w-36 h-36 bg-secondary/15 rounded-bl-full pointer-events-none"></div>
+                <h3 className="text-2xl sm:text-3xl font-bold mb-6 text-white">My Commitment to You</h3>
+                
+                <ul className="space-y-6">
+                  <li className="flex gap-4">
+                    <CheckCircle className="text-secondary shrink-0 mt-1" size={24}/>
+                    <p className="text-gray-200">Every client deserves professionalism, patience, and respect.</p>
+                  </li>
+                  <li className="flex gap-4">
+                    <CheckCircle className="text-secondary shrink-0 mt-1" size={24}/>
+                    <p className="text-gray-200">Clear communication, transparent pricing, and careful attention to detail.</p>
+                  </li>
+                  <li className="flex gap-4">
+                    <CheckCircle className="text-secondary shrink-0 mt-1" size={24}/>
+                    <p className="text-gray-200">I arrive prepared and work hard to earn your trust and future business.</p>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* Services Section */}
+        <section id="services" className="py-20 lg:py-28 bg-gray-100/70 border-t border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <span className="text-primary font-bold text-xs uppercase tracking-widest bg-primary/10 px-3 py-1 rounded-full">
+                What We Offer
+              </span>
+              <h2 className="text-3xl sm:text-5xl font-extrabold text-primary mt-3 mb-4 tracking-tight">
+                Comprehensive Mobile Notary Services
+              </h2>
+              <div className="w-24 h-1.5 bg-secondary mx-auto rounded-full"></div>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                { icon: FileText, title: "Real Estate Closings", desc: "Purchase, refinance, HELOC, seller packages, and mobile loan signings." },
+                { icon: CheckCircle, title: "General Notary Work", desc: "Affidavits, powers of attorney, wills, acknowledgments, and jurats." },
+                { icon: Building2, title: "Hospital & Bedside Notarizations", desc: "Compassionate mobile notarizations directly in patient rooms and care centers." },
+                { icon: FileText, title: "Business & Commercial", desc: "Business contracts, employment forms, and corporate documents." },
+                { icon: Car, title: "Mobile Travel Service", desc: "I travel directly to your home, office, coffee shop, hospital, or agreed site." },
+                { icon: Clock, title: "Evening & Weekend Appointments", desc: "Flexible scheduling when traditional office hours don't fit your agenda." }
+              ].map((s, i) => (
+                <div key={i} className="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all border border-gray-200/80 group">
+                  <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
+                    <s.icon className="text-primary group-hover:text-secondary transition-colors" size={28} />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">{s.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{s.desc}</p>
+                </div>
+              ))}
+            </div>
+
+          </div>
+        </section>
+
+        {/* Interactive Fee Estimator */}
+        <FeeEstimator />
+
+        {/* 4-County Service Area Matrix */}
+        <ServiceAreaMatrix />
+
+        {/* Reviews Section */}
+        <ReviewsSection />
+
+        {/* FAQ Section */}
+        <FAQSection />
+
+      </main>
 
       {/* Footer */}
-      <footer className="bg-primary text-white py-12 border-t border-purple-900">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-2xl font-bold mb-6"><span className="text-secondary">Legacy</span> Notary Public</h2>
-          <p className="text-gray-400 mb-8 max-w-md mx-auto">
-            Professional, dependable mobile notary services for life's most important moments.
-          </p>
-          <div className="flex justify-center gap-6 mb-8">
-            <a href="tel:9795291312" className="text-gray-300 hover:text-secondary transition-colors">
-              (979) 529-1312
+      <footer className="bg-primary text-white py-14 border-t border-purple-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
+          
+          <div>
+            <h2 className="text-3xl font-extrabold tracking-tight">
+              <span className="text-secondary">Legacy</span> Notary Public
+            </h2>
+            <p className="text-gray-300 mt-2 max-w-md mx-auto text-sm sm:text-base">
+              Professional, dependable mobile notary services serving Brazoria, Matagorda, Galveston, and Harris Counties.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-6 text-sm font-semibold">
+            <a href="tel:9795291312" className="text-gray-200 hover:text-secondary transition-colors flex items-center gap-1.5">
+              <PhoneCall size={16} /> (979) 529-1312
+            </a>
+            <a href="sms:+19795291312?body=Hi%20Jeannie!" className="text-gray-200 hover:text-secondary transition-colors">
+              Text Message
+            </a>
+            <a href={bookingUrl} target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-secondary transition-colors">
+              Book Form
             </a>
           </div>
-          <p className="text-sm text-gray-500">
-            &copy; {new Date().getFullYear()} Legacy Notary Public. All rights reserved.
-          </p>
+
+          <div className="border-t border-purple-900/80 pt-6 max-w-3xl mx-auto text-xs text-gray-400 leading-relaxed">
+            <p className="mb-3">
+              <strong>Mandatory Texas Notice:</strong> Jeannie Hernandez is a commissioned Texas Notary Public. I am not an attorney licensed to practice law in Texas and may not give legal advice or accept fees for legal advice.
+            </p>
+            <div className="flex justify-center gap-4 text-gray-400 font-medium">
+              <button onClick={() => setIsPrivacyOpen(true)} className="hover:text-secondary underline">Privacy Policy</button>
+              <span>•</span>
+              <button onClick={() => setIsTermsOpen(true)} className="hover:text-secondary underline">Terms of Service</button>
+            </div>
+            <p className="mt-4 text-gray-500">
+              &copy; {new Date().getFullYear()} Legacy Notary Public. All rights reserved.
+            </p>
+          </div>
+
         </div>
       </footer>
+
+      {/* Floating Mobile Sticky Speed-Dial Bar */}
+      <MobileCallBar />
+
+      {/* Legal Modals */}
+      <PrivacyModal isOpen={isPrivacyOpen} onClose={() => setIsPrivacyOpen(false)} />
+      <TermsModal isOpen={isTermsOpen} onClose={() => setIsTermsOpen(false)} />
+
     </div>
   );
 }
