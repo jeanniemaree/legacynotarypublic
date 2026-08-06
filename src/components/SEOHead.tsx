@@ -101,7 +101,7 @@ export const SEOHead = () => {
 
   return (
     <Helmet>
-      <title>Legacy Notary Public | Mobile Notary Services in Brazoria & Harris County, TX</title>
+      <title>Legacy Notary Public | Texas Mobile Notary Services</title>
       <meta name="description" content="Professional mobile notary serving Brazoria, Matagorda, Galveston, and Harris Counties. We travel to your home, office, hospital, or facility. Call (979) 529-1312." />
       <link rel="canonical" href="https://legacynotarypublic.com/" />
       
