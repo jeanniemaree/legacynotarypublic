@@ -7,17 +7,19 @@
     <meta name="theme-color" content="#3b0764" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" />
     
     <title>Legacy Notary Public | Texas Mobile Notary Services</title>
-    <meta name="description" content="Professional mobile notary serving Brazoria, Matagorda, Galveston, and Harris Counties. Traveling to your home, office, hospital, or facility. Call (979) 529-1312." />
+    <meta name="description" content="Professional mobile notary serving Brazoria, Matagorda, Galveston, and Harris Counties. Travel to your home, hospital, or office. Call (979) 529-1312." />
+    <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://legacynotarypublic.com/" />
     
     <!-- OpenGraph / Social Metadata -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Legacy Notary Public" />
     <meta property="og:title" content="Legacy Notary Public | Texas Mobile Notary Services" />
-    <meta property="og:description" content="Professional mobile notary serving Brazoria, Matagorda, Galveston, and Harris Counties. Traveling directly to your home, office, hospital, or care facility." />
+    <meta property="og:description" content="Professional mobile notary serving Brazoria, Matagorda, Galveston, and Harris Counties. Travel to your home, hospital, or office. Call (979) 529-1312." />
     <meta property="og:url" content="https://legacynotarypublic.com/" />
     <meta property="og:image" content="https://legacynotarypublic.com/images/Headshot.jpeg" />
     <meta property="og:image:width" content="1200" />
@@ -28,7 +30,7 @@
     <!-- Twitter Card Metadata -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Legacy Notary Public | Texas Mobile Notary Services" />
-    <meta name="twitter:description" content="Professional mobile notary serving Brazoria, Matagorda, Galveston, and Harris Counties. Call (979) 529-1312." />
+    <meta name="twitter:description" content="Professional mobile notary serving Brazoria, Matagorda, Galveston, and Harris Counties. Travel to your home, hospital, or office. Call (979) 529-1312." />
     <meta name="twitter:image" content="https://legacynotarypublic.com/images/Headshot.jpeg" />
 
     <!-- Schema.org JSON-LD Structured Data -->
@@ -37,19 +39,37 @@
       "@context": "https://schema.org",
       "@graph": [
         {
+          "@type": "WebSite",
+          "@id": "https://legacynotarypublic.com/#website",
+          "url": "https://legacynotarypublic.com/",
+          "name": "Legacy Notary Public",
+          "description": "Professional mobile notary serving Brazoria, Matagorda, Galveston, and Harris Counties. Travel to your home, hospital, or office. Call (979) 529-1312.",
+          "publisher": {
+            "@id": "https://legacynotarypublic.com/#notary"
+          }
+        },
+        {
           "@type": ["LocalBusiness", "Notary"],
           "@id": "https://legacynotarypublic.com/#notary",
           "name": "Legacy Notary Public",
           "image": "https://legacynotarypublic.com/images/Headshot.jpeg",
-          "logo": "https://legacynotarypublic.com/favicon.svg",
-          "description": "Professional mobile notary services serving Brazoria, Matagorda, Galveston, and Harris Counties. Traveling to your home, office, hospital, nursing facility, or agreed location.",
+          "logo": "https://legacynotarypublic.com/images/Headshot.jpeg",
+          "description": "Professional mobile notary serving Brazoria, Matagorda, Galveston, and Harris Counties. Travel to your home, hospital, or office. Call (979) 529-1312.",
           "url": "https://legacynotarypublic.com/",
           "telephone": "+19795291312",
           "priceRange": "$$",
           "paymentAccepted": ["Cash", "Credit Card", "Debit Card", "Tap to Pay", "Zelle"],
+          "sameAs": [
+            "https://www.google.com/maps",
+            "https://businessconnect.apple.com",
+            "https://www.bing.com/maps",
+            "https://www.facebook.com/legacynotarypublic"
+          ],
           "address": {
             "@type": "PostalAddress",
+            "addressLocality": "Lake Jackson",
             "addressRegion": "TX",
+            "postalCode": "77566",
             "addressCountry": "US"
           },
           "geo": {
@@ -61,12 +81,49 @@
             { "@type": "AdministrativeArea", "name": "Brazoria County, TX" },
             { "@type": "AdministrativeArea", "name": "Matagorda County, TX" },
             { "@type": "AdministrativeArea", "name": "Galveston County, TX" },
-            { "@type": "AdministrativeArea", "name": "Harris County, TX" }
+            { "@type": "AdministrativeArea", "name": "Harris County, TX" },
+            { "@type": "City", "name": "Lake Jackson" },
+            { "@type": "City", "name": "Freeport" },
+            { "@type": "City", "name": "Clute" },
+            { "@type": "City", "name": "Angleton" },
+            { "@type": "City", "name": "Pearland" },
+            { "@type": "City", "name": "League City" },
+            { "@type": "City", "name": "Houston" }
           ],
           "founder": {
             "@type": "Person",
             "name": "Jeannie Hernandez",
             "jobTitle": "Commissioned Texas Notary Public"
+          },
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Mobile Notary Services Catalog",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Real Estate Closings & Loan Signings",
+                  "description": "Purchase, refinance, HELOC, seller packages, and mobile loan signings."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "General Notary Work",
+                  "description": "Affidavits, powers of attorney, wills, acknowledgments, and jurats."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Hospital & Healthcare Notarizations",
+                  "description": "Compassionate mobile notarizations directly in hospital rooms and care facilities."
+                }
+              }
+            ]
           }
         },
         {
@@ -102,8 +159,8 @@
       ]
     }
     </script>
-    <script type="module" crossorigin src="/assets/index-TxtIE5eA.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-CKlq81MM.css">
+    <script type="module" crossorigin src="/assets/index-oxjSEjer.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-RcovWejM.css">
   </head>
   <body class="bg-gray-50 text-gray-800 antialiased selection:bg-secondary selection:text-primary">
     <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:p-4 focus:bg-secondary focus:text-primary focus:font-bold">

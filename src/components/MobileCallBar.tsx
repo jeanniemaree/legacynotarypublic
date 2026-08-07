@@ -1,4 +1,5 @@
 import { PhoneCall, MessageSquare, Calendar } from 'lucide-react';
+import { siteConfig } from '../config/siteConfig';
 
 export const MobileCallBar = () => {
   const bookingUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeFGHvwVwHGdY4qKWPtPrZry7vl7EoU-xR6Vp96HBEdaibV_g/viewform";
@@ -8,7 +9,7 @@ export const MobileCallBar = () => {
       <div className="grid grid-cols-3 gap-2">
         
         <a
-          href="tel:9795291312"
+          href={`tel:${siteConfig.phoneE164}`}
           className="flex flex-col items-center justify-center py-2 px-1 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-semibold transition-colors"
         >
           <PhoneCall size={18} className="text-secondary mb-1" />
@@ -16,7 +17,7 @@ export const MobileCallBar = () => {
         </a>
 
         <a
-          href="sms:+19795291312?body=Hi%20Jeannie!%20I%20need%20a%20mobile%20notary."
+          href={`sms:${siteConfig.phoneE164}?body=Hi%20${encodeURIComponent(siteConfig.ownerName.split(' ')[0])}!%20I%20need%20a%20mobile%20notary.`}
           className="flex flex-col items-center justify-center py-2 px-1 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-semibold transition-colors"
         >
           <MessageSquare size={18} className="text-secondary mb-1" />

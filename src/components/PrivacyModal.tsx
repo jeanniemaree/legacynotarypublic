@@ -1,4 +1,6 @@
+import { useEffect, useRef } from 'react';
 import { X, Shield } from 'lucide-react';
+import { siteConfig } from '../config/siteConfig';
 
 interface ModalProps {
   isOpen: boolean;
@@ -6,12 +8,37 @@ interface ModalProps {
 }
 
 export const PrivacyModal = ({ isOpen, onClose }: ModalProps) => {
-  if (!isOpen) return null;
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+
+    if (isOpen) {
+      if (!dialog.open) {
+        dialog.showModal();
+      }
+    } else {
+      if (dialog.open) {
+        dialog.close();
+      }
+    }
+  }, [isOpen]);
+
+  // Handle ESC key or backdrop click via standard cancel event
+  const handleCancel = (e: React.SyntheticEvent<HTMLDialogElement, Event>) => {
+    e.preventDefault();
+    onClose();
+  };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in" role="dialog" aria-modal="true" aria-labelledby="privacy-title">
-      <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[85vh] overflow-y-auto p-6 sm:p-8 shadow-2xl border border-gray-200 relative">
-        
+    <dialog
+      ref={dialogRef}
+      onCancel={handleCancel}
+      className="backdrop:bg-black/70 backdrop:backdrop-blur-sm bg-transparent p-4 max-w-2xl w-full rounded-3xl outline-none border-none overflow-visible"
+      aria-labelledby="privacy-title"
+    >
+      <div className="bg-white rounded-3xl w-full max-h-[85vh] overflow-y-auto p-6 sm:p-8 shadow-2xl border border-gray-200 relative">
         <div className="flex justify-between items-center pb-4 border-b border-gray-200">
           <h3 id="privacy-title" className="text-xl font-bold text-primary flex items-center gap-2">
             <Shield size={20} className="text-secondary" /> Privacy Policy
@@ -27,7 +54,7 @@ export const PrivacyModal = ({ isOpen, onClose }: ModalProps) => {
 
         <div className="mt-6 space-y-4 text-sm text-gray-700 leading-relaxed">
           <p>
-            <strong>Legacy Notary Public</strong> ("we," "us," or "our") respects your privacy. This policy outlines how we handle personal information submitted through our mobile notary booking requests and communications.
+            <strong>{siteConfig.businessName}</strong> ("we," "us," or "our") respects your privacy. This policy outlines how we handle personal information submitted through our mobile notary booking requests and communications.
           </p>
           
           <h4 className="font-bold text-gray-900 text-base">1. Information We Collect</h4>
@@ -47,7 +74,10 @@ export const PrivacyModal = ({ isOpen, onClose }: ModalProps) => {
 
           <h4 className="font-bold text-gray-900 text-base">4. Contact Us</h4>
           <p>
-            For questions regarding this privacy policy, please contact Jeannie Hernandez at <strong>(979) 529-1312</strong>.
+            For questions regarding this privacy policy, please contact {siteConfig.ownerName} at{' '}
+            <a href={`tel:${siteConfig.phoneE164}`} className="font-bold text-primary hover:underline">
+              {siteConfig.phoneDisplay}
+            </a>.
           </p>
         </div>
 
@@ -59,8 +89,7 @@ export const PrivacyModal = ({ isOpen, onClose }: ModalProps) => {
             Close
           </button>
         </div>
-
       </div>
-    </div>
+    </dialog>
   );
 };

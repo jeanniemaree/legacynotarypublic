@@ -1,39 +1,58 @@
 import { Helmet } from 'react-helmet-async';
+import { siteConfig } from '../config/siteConfig';
 
 export const SEOHead = () => {
   const schemaGraph = {
     "@context": "https://schema.org",
     "@graph": [
       {
+        "@type": "WebSite",
+        "@id": `${siteConfig.domain}/#website`,
+        "url": `${siteConfig.domain}/`,
+        "name": siteConfig.businessName,
+        "description": siteConfig.description,
+        "publisher": {
+          "@id": `${siteConfig.domain}/#notary`
+        }
+      },
+      {
         "@type": ["LocalBusiness", "Notary"],
-        "@id": "https://legacynotarypublic.com/#notary",
-        "name": "Legacy Notary Public",
-        "image": "https://legacynotarypublic.com/images/Headshot.jpeg",
-        "description": "Professional mobile notary services serving Brazoria, Matagorda, Galveston, and Harris Counties. Traveling to your home, office, hospital, nursing facility, or agreed location.",
-        "url": "https://legacynotarypublic.com/",
-        "telephone": "+19795291312",
+        "@id": `${siteConfig.domain}/#notary`,
+        "name": siteConfig.businessName,
+        "image": siteConfig.logoUrl,
+        "logo": siteConfig.logoUrl,
+        "description": siteConfig.description,
+        "url": `${siteConfig.domain}/`,
+        "telephone": siteConfig.phoneE164,
         "priceRange": "$$",
         "paymentAccepted": ["Cash", "Credit Card", "Debit Card", "Tap to Pay", "Zelle"],
+        "sameAs": siteConfig.sameAs,
         "address": {
           "@type": "PostalAddress",
-          "addressRegion": "TX",
-          "addressCountry": "US"
+          "addressLocality": siteConfig.addressLocality,
+          "addressRegion": siteConfig.addressRegion,
+          "postalCode": siteConfig.postalCode,
+          "addressCountry": siteConfig.addressCountry
         },
         "geo": {
           "@type": "GeoCoordinates",
-          "latitude": 29.0436,
-          "longitude": -95.4355
+          "latitude": siteConfig.latitude,
+          "longitude": siteConfig.longitude
         },
         "areaServed": [
-          { "@type": "AdministrativeArea", "name": "Brazoria County, TX" },
-          { "@type": "AdministrativeArea", "name": "Matagorda County, TX" },
-          { "@type": "AdministrativeArea", "name": "Galveston County, TX" },
-          { "@type": "AdministrativeArea", "name": "Harris County, TX" }
+          ...siteConfig.serviceAreaCounties.map(county => ({
+            "@type": "AdministrativeArea",
+            "name": county
+          })),
+          ...siteConfig.serviceAreaCities.map(city => ({
+            "@type": "City",
+            "name": city
+          }))
         ],
         "founder": {
           "@type": "Person",
-          "name": "Jeannie Hernandez",
-          "jobTitle": "Commissioned Texas Notary Public"
+          "name": siteConfig.ownerName,
+          "jobTitle": siteConfig.ownerTitle
         },
         "hasOfferCatalog": {
           "@type": "OfferCatalog",
@@ -68,7 +87,7 @@ export const SEOHead = () => {
       },
       {
         "@type": "FAQPage",
-        "@id": "https://legacynotarypublic.com/#faq",
+        "@id": `${siteConfig.domain}/#faq`,
         "mainEntity": [
           {
             "@type": "Question",
@@ -101,22 +120,27 @@ export const SEOHead = () => {
 
   return (
     <Helmet>
-      <title>Legacy Notary Public | Texas Mobile Notary Services</title>
-      <meta name="description" content="Professional mobile notary serving Brazoria, Matagorda, Galveston, and Harris Counties. We travel to your home, office, hospital, or facility. Call (979) 529-1312." />
-      <link rel="canonical" href="https://legacynotarypublic.com/" />
+      <title>{siteConfig.businessName} | Texas Mobile Notary Services</title>
+      <meta name="description" content={siteConfig.description} />
+      <meta name="robots" content="index, follow" />
+      <link rel="canonical" href={`${siteConfig.domain}/`} />
       
       {/* OpenGraph / Facebook */}
-      <meta property="og:title" content="Legacy Notary Public | Mobile Notary Services" />
-      <meta property="og:description" content="Professional mobile notary serving Brazoria, Matagorda, Galveston, and Harris Counties. We travel to you." />
-      <meta property="og:image" content="https://legacynotarypublic.com/images/Headshot.jpeg" />
-      <meta property="og:url" content="https://legacynotarypublic.com/" />
+      <meta property="og:title" content={`${siteConfig.businessName} | Texas Mobile Notary Services`} />
+      <meta property="og:description" content={siteConfig.description} />
+      <meta property="og:image" content={siteConfig.logoUrl} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content={`${siteConfig.ownerName} - ${siteConfig.ownerTitle}`} />
+      <meta property="og:url" content={`${siteConfig.domain}/`} />
       <meta property="og:type" content="website" />
+      <meta property="og:locale" content="en_US" />
 
       {/* Twitter Cards */}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content="Legacy Notary Public | Mobile Notary Services" />
-      <meta name="twitter:description" content="Professional mobile notary serving Brazoria, Matagorda, Galveston, and Harris Counties." />
-      <meta name="twitter:image" content="https://legacynotarypublic.com/images/Headshot.jpeg" />
+      <meta name="twitter:title" content={`${siteConfig.businessName} | Texas Mobile Notary Services`} />
+      <meta name="twitter:description" content={siteConfig.description} />
+      <meta name="twitter:image" content={siteConfig.logoUrl} />
 
       {/* Structured Data JSON-LD */}
       <script type="application/ld+json">

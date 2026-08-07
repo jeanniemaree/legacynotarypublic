@@ -9,6 +9,7 @@ import { LegalDisclaimer } from './components/LegalDisclaimer';
 import { MobileCallBar } from './components/MobileCallBar';
 import { PrivacyModal } from './components/PrivacyModal';
 import { TermsModal } from './components/TermsModal';
+import { siteConfig } from './config/siteConfig';
 
 function App() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -49,10 +50,10 @@ function App() {
             <a href="#about" className="hover:text-secondary transition-colors text-sm font-semibold uppercase tracking-wider">Meet Jeannie</a>
             <a href="#faq" className="hover:text-secondary transition-colors text-sm font-semibold uppercase tracking-wider">FAQ</a>
             <a 
-              href="tel:9795291312" 
+              href={`tel:${siteConfig.phoneE164}`} 
               className="bg-secondary text-primary px-5 py-2 rounded-full font-extrabold hover:bg-yellow-400 transition-transform transform hover:scale-105 shadow-md flex items-center gap-2"
             >
-              <PhoneCall size={16} /> (979) 529-1312
+              <PhoneCall size={16} /> {siteConfig.phoneDisplay}
             </a>
           </div>
 
@@ -78,8 +79,8 @@ function App() {
             <a href="#service-area" onClick={() => setIsMobileMenuOpen(false)} className="text-white py-3 border-b border-white/10 hover:text-secondary font-medium">Service Area</a>
             <a href="#about" onClick={() => setIsMobileMenuOpen(false)} className="text-white py-3 border-b border-white/10 hover:text-secondary font-medium">Meet Jeannie</a>
             <a href="#faq" onClick={() => setIsMobileMenuOpen(false)} className="text-white py-3 border-b border-white/10 hover:text-secondary font-medium">FAQ</a>
-            <a href="tel:9795291312" className="text-center bg-secondary text-primary font-bold py-3 mt-4 rounded-xl flex items-center justify-center gap-2">
-              <PhoneCall size={18} /> Call Now: (979) 529-1312
+            <a href={`tel:${siteConfig.phoneE164}`} className="text-center bg-secondary text-primary font-bold py-3 mt-4 rounded-xl flex items-center justify-center gap-2">
+              <PhoneCall size={18} /> Call Now: {siteConfig.phoneDisplay}
             </a>
           </div>
         )}
@@ -125,7 +126,7 @@ function App() {
                 </a>
 
                 <a 
-                  href="sms:+19795291312?body=Hi%20Jeannie!%20I%20need%20a%20mobile%20notary." 
+                  href={`sms:${siteConfig.phoneE164}?body=Hi%20${encodeURIComponent(siteConfig.ownerName.split(' ')[0])}!%20I%20need%20a%20mobile%20notary.`} 
                   className="glass text-white font-bold text-base sm:text-lg px-8 py-4 rounded-full shadow-lg hover:bg-white/20 transition-all transform hover:-translate-y-1 flex items-center gap-2 border border-white/30"
                 >
                   <PhoneCall size={20} className="text-secondary" /> Text Now
@@ -150,6 +151,7 @@ function App() {
                 alt="Jeannie Hernandez - Commissioned Texas Notary Public" 
                 width="400"
                 height="500"
+                fetchPriority="high"
                 decoding="async"
                 className="relative z-10 w-full max-w-md mx-auto rounded-3xl shadow-2xl border-4 border-white/20 object-cover aspect-[4/5]"
               />
@@ -184,6 +186,7 @@ function App() {
                   alt="Jeannie Hernandez" 
                   width="400"
                   height="500"
+                  fetchPriority="high"
                   decoding="async"
                   className="w-full max-w-sm mx-auto rounded-3xl shadow-xl border-2 border-gray-100 object-cover aspect-[4/5]"
                 />
@@ -295,10 +298,10 @@ function App() {
           </div>
 
           <div className="flex flex-wrap justify-center gap-6 text-sm font-semibold">
-            <a href="tel:9795291312" className="text-gray-200 hover:text-secondary transition-colors flex items-center gap-1.5">
-              <PhoneCall size={16} /> (979) 529-1312
+            <a href={`tel:${siteConfig.phoneE164}`} className="text-gray-200 hover:text-secondary transition-colors flex items-center gap-1.5">
+              <PhoneCall size={16} /> {siteConfig.phoneDisplay}
             </a>
-            <a href="sms:+19795291312?body=Hi%20Jeannie!" className="text-gray-200 hover:text-secondary transition-colors">
+            <a href={`sms:${siteConfig.phoneE164}?body=Hi%20${encodeURIComponent(siteConfig.ownerName.split(' ')[0])}!`} className="text-gray-200 hover:text-secondary transition-colors">
               Text Message
             </a>
             <a href={bookingUrl} target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-secondary transition-colors">
@@ -308,7 +311,7 @@ function App() {
 
           <div className="border-t border-purple-900/80 pt-6 max-w-3xl mx-auto text-xs text-gray-400 leading-relaxed">
             <p className="mb-3">
-              <strong>Mandatory Texas Notice:</strong> Jeannie Hernandez is a commissioned Texas Notary Public. I am not an attorney licensed to practice law in Texas and may not give legal advice or accept fees for legal advice.
+              <strong>Mandatory Texas Notice:</strong> {siteConfig.ownerName} is a commissioned Texas Notary Public. I am not an attorney licensed to practice law in Texas and may not give legal advice or accept fees for legal advice.
             </p>
             <div className="flex justify-center gap-4 text-gray-400 font-medium">
               <button onClick={() => setIsPrivacyOpen(true)} className="hover:text-secondary underline">Privacy Policy</button>

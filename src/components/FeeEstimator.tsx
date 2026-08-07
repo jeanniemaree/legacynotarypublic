@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { siteConfig } from '../config/siteConfig';
 import {
   Calculator,
   ArrowRight,
@@ -233,7 +234,7 @@ export const FeeEstimator: React.FC = () => {
 
   // --- Pre-filled SMS Message Generator ---
   const generateSmsBody = () => {
-    let text = `Hi Jeannie! I used your website calculator for an estimate:\n`;
+    let text = `Hi ${siteConfig.ownerName.split(' ')[0]}! I used your website calculator for an estimate:\n`;
     if (calcResult) {
       text += `📍 Destination: ${calcResult.formattedAddress} (${calcResult.distanceText})\n`;
       text += `🚗 Travel Fee: ${isCustomTravelQuote ? 'Quote Needed' : '$' + currentTravelFeeNum}\n`;
@@ -713,10 +714,10 @@ export const FeeEstimator: React.FC = () => {
               </a>
 
               <a
-                href={`sms:+19795291312?body=${generateSmsBody()}`}
+                href={`sms:${siteConfig.phoneE164}?body=${generateSmsBody()}`}
                 className="w-full bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2 border border-white/20 text-sm text-center"
               >
-                <PhoneCall size={16} /> Text Quote to Jeannie
+                <PhoneCall size={16} /> Text Quote to {siteConfig.ownerName.split(' ')[0]}
               </a>
 
               <p className="text-[11px] text-center text-gray-400 pt-1">

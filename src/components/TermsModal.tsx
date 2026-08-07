@@ -1,4 +1,6 @@
+import { useEffect, useRef } from 'react';
 import { X, FileText } from 'lucide-react';
+import { siteConfig } from '../config/siteConfig';
 
 interface ModalProps {
   isOpen: boolean;
@@ -6,12 +8,36 @@ interface ModalProps {
 }
 
 export const TermsModal = ({ isOpen, onClose }: ModalProps) => {
-  if (!isOpen) return null;
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+
+    if (isOpen) {
+      if (!dialog.open) {
+        dialog.showModal();
+      }
+    } else {
+      if (dialog.open) {
+        dialog.close();
+      }
+    }
+  }, [isOpen]);
+
+  const handleCancel = (e: React.SyntheticEvent<HTMLDialogElement, Event>) => {
+    e.preventDefault();
+    onClose();
+  };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in" role="dialog" aria-modal="true" aria-labelledby="terms-title">
-      <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[85vh] overflow-y-auto p-6 sm:p-8 shadow-2xl border border-gray-200 relative">
-        
+    <dialog
+      ref={dialogRef}
+      onCancel={handleCancel}
+      className="backdrop:bg-black/70 backdrop:backdrop-blur-sm bg-transparent p-4 max-w-2xl w-full rounded-3xl outline-none border-none overflow-visible"
+      aria-labelledby="terms-title"
+    >
+      <div className="bg-white rounded-3xl w-full max-h-[85vh] overflow-y-auto p-6 sm:p-8 shadow-2xl border border-gray-200 relative">
         <div className="flex justify-between items-center pb-4 border-b border-gray-200">
           <h3 id="terms-title" className="text-xl font-bold text-primary flex items-center gap-2">
             <FileText size={20} className="text-secondary" /> Terms of Service & Travel Policies
@@ -38,7 +64,7 @@ export const TermsModal = ({ isOpen, onClose }: ModalProps) => {
 
           <h4 className="font-bold text-gray-900 text-base">3. Non-Attorney Disclaimer</h4>
           <p className="font-semibold text-amber-900 bg-amber-50 p-3 rounded-lg border border-amber-200">
-            Jeannie Hernandez is a commissioned Texas Notary Public, NOT an attorney licensed to practice law in Texas. She may not give legal advice or accept fees for legal advice.
+            {siteConfig.ownerName} is a commissioned Texas Notary Public, NOT an attorney licensed to practice law in Texas. She may not give legal advice or accept fees for legal advice.
           </p>
 
           <h4 className="font-bold text-gray-900 text-base">4. Cancellation & Travel Terms</h4>
@@ -55,8 +81,7 @@ export const TermsModal = ({ isOpen, onClose }: ModalProps) => {
             Close
           </button>
         </div>
-
       </div>
-    </div>
+    </dialog>
   );
 };
