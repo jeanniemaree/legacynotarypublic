@@ -42,9 +42,9 @@ export const siteConfig = {
 
   // --- External Profiles & Off-Page Entities (sameAs) ---
   sameAs: [
-    "https://www.google.com/maps", // Replace with exact GBP URL once claimed
-    "https://businessconnect.apple.com", // Replace with exact Apple Business URL once claimed
-    "https://www.bing.com/maps", // Replace with exact Bing Places URL once claimed
-    "https://www.facebook.com/legacynotarypublic" // Update if different
+    "https://maps.app.goo.gl/DQM6PWD8tFuKWvrZ9",
+    "https://businessconnect.apple.com",
+    "https://www.bing.com/maps",
+    "https://www.facebook.com/legacynotarypublic"
   ]
 };
