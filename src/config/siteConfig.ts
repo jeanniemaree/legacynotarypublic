@@ -38,7 +38,7 @@ export const siteConfig = {
 
   // --- Domains & Branding ---
   domain: "https://legacynotarypublic.com",
-  logoUrl: "https://legacynotarypublic.com/images/Headshot.jpeg",
+  logoUrl: "https://legacynotarypublic.com/images/headshot-800.jpg",
   bookingUrl:
     "https://docs.google.com/forms/d/e/1FAIpQLSeFGHvwVwHGdY4qKWPtPrZry7vl7EoU-xR6Vp96HBEdaibV_g/viewform",
 

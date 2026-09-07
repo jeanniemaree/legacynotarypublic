@@ -1,105 +1,17 @@
 import { Helmet } from 'react-helmet-async';
 import { siteConfig } from '../config/siteConfig';
 
+/**
+ * SEOHead manages the document <title> and social meta only.
+ *
+ * The canonical JSON-LD structured data (@graph: WebSite + LocalBusiness/Notary
+ * + FAQPage) lives ONCE in the static index.html <head> so no-JS crawlers and
+ * AI agents get it in raw HTML. We intentionally do NOT re-inject it via Helmet:
+ * react-helmet-async cannot dedupe arbitrary <script> tags, so a second copy
+ * would create duplicate @id entities that fight the static graph. The static
+ * FAQPage mirrors siteConfig.faqs exactly — keep them in sync when editing.
+ */
 export const SEOHead = () => {
-  const schemaGraph = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebSite",
-        "@id": `${siteConfig.domain}/#website`,
-        "url": `${siteConfig.domain}/`,
-        "name": siteConfig.businessName,
-        "description": siteConfig.description,
-        "publisher": {
-          "@id": `${siteConfig.domain}/#notary`
-        }
-      },
-      {
-        "@type": ["LocalBusiness", "Notary"],
-        "@id": `${siteConfig.domain}/#notary`,
-        "name": siteConfig.businessName,
-        "image": siteConfig.logoUrl,
-        "logo": siteConfig.logoUrl,
-        "description": siteConfig.description,
-        "url": `${siteConfig.domain}/`,
-        "telephone": siteConfig.phoneE164,
-        "priceRange": "$$",
-        "paymentAccepted": ["Cash", "Credit Card", "Debit Card", "Tap to Pay", "Zelle"],
-        "sameAs": siteConfig.sameAs,
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": siteConfig.addressLocality,
-          "addressRegion": siteConfig.addressRegion,
-          "postalCode": siteConfig.postalCode,
-          "addressCountry": siteConfig.addressCountry
-        },
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": siteConfig.latitude,
-          "longitude": siteConfig.longitude
-        },
-        "areaServed": [
-          ...siteConfig.serviceAreaCounties.map(county => ({
-            "@type": "AdministrativeArea",
-            "name": county
-          })),
-          ...siteConfig.serviceAreaCities.map(city => ({
-            "@type": "City",
-            "name": city
-          }))
-        ],
-        "founder": {
-          "@type": "Person",
-          "name": siteConfig.ownerName,
-          "jobTitle": siteConfig.ownerTitle
-        },
-        "hasOfferCatalog": {
-          "@type": "OfferCatalog",
-          "name": "Mobile Notary Services Catalog",
-          "itemListElement": [
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "Real Estate Closings & Loan Signings",
-                "description": "Purchase, refinance, HELOC, seller packages, and mobile loan signings."
-              }
-            },
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "General Notary Work",
-                "description": "Affidavits, powers of attorney, wills, acknowledgments, and jurats."
-              }
-            },
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "Hospital & Healthcare Notarizations",
-                "description": "Compassionate mobile notarizations directly in hospital rooms and care facilities."
-              }
-            }
-          ]
-        }
-      },
-      {
-        "@type": "FAQPage",
-        "@id": `${siteConfig.domain}/#faq`,
-        "mainEntity": siteConfig.faqs.map((faq) => ({
-          "@type": "Question",
-          "name": faq.question,
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": faq.answer
-          }
-        }))
-      }
-    ]
-  };
-
   return (
     <Helmet>
       <title>{siteConfig.businessName} | Texas Mobile Notary Services</title>
@@ -125,10 +37,8 @@ export const SEOHead = () => {
       <meta name="twitter:description" content={siteConfig.description} />
       <meta name="twitter:image" content={siteConfig.logoUrl} />
 
-      {/* Structured Data JSON-LD */}
-      <script type="application/ld+json">
-        {JSON.stringify(schemaGraph)}
-      </script>
+      {/* JSON-LD structured data lives in static index.html (see note above) to
+          avoid duplicate @id entities Helmet cannot dedupe. */}
     </Helmet>
   );
 };

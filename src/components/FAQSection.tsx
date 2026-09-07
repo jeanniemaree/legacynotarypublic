@@ -50,14 +50,16 @@ export const FAQSection = () => {
                   />
                 </button>
 
-                {/* Keep answers in the DOM for crawlers/agents (CSS collapse, not conditional mount) */}
+                {/* Keep answers in the DOM for crawlers/agents (CSS collapse, not conditional mount).
+                    Closed panels use inert + visually collapsed so text remains in HTML source. */}
                 <div
                   id={panelId}
                   role="region"
                   aria-labelledby={buttonId}
-                  className={`p-6 bg-white border-t border-gray-100 text-gray-700 leading-relaxed text-base ${isOpen ? '' : 'hidden'}`}
+                  inert={isOpen ? undefined : true}
+                  className={`bg-white border-t border-gray-100 text-gray-700 leading-relaxed text-base overflow-hidden transition-[max-height,padding] ${isOpen ? 'p-6 max-h-[40rem]' : 'max-h-0 p-0 border-t-0'}`}
                 >
-                  <p>{faq.answer}</p>
+                  <p className={isOpen ? '' : 'sr-only'}>{faq.answer}</p>
                 </div>
               </div>
             );

@@ -1,6 +1,5 @@
 ﻿import { useState, useEffect } from 'react';
 import { Menu, X, Car, Building2, MapPin, PhoneCall, FileText, CheckCircle, Clock, ShieldCheck, Star } from 'lucide-react';
-import { SEOHead } from './components/SEOHead';
 import { FeeEstimator } from './components/FeeEstimator';
 import { ServiceAreaMatrix } from './components/ServiceAreaMatrix';
 import { FAQSection } from './components/FAQSection';
@@ -29,11 +28,11 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col font-sans bg-gray-50 text-gray-800 pb-16 md:pb-0">
-      <SEOHead />
-      
-      {/* Navigation Bar */}
-      <nav 
+      {/* Landmark header + nav for agentic accessibility tree */}
+      <header
         className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'glass-dark py-3 shadow-lg' : 'bg-primary py-5 border-b border-purple-900/50'}`}
+      >
+      <nav 
         aria-label="Main Navigation"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
@@ -85,6 +84,7 @@ function App() {
           </div>
         )}
       </nav>
+      </header>
 
       {/* Main Content Area */}
       <main id="main-content">
@@ -132,7 +132,7 @@ function App() {
                 </a>
               </div>
 
-              {/* Quick Trust Badges â€” no fabricated AggregateRating; point to verified GBP */}
+              {/* Quick Trust Badges — no fabricated AggregateRating; point to verified GBP */}
               <div className="pt-6 border-t border-white/10 flex flex-wrap items-center gap-6 text-xs sm:text-sm text-gray-300">
                 <a
                   href={siteConfig.sameAs[0]}
@@ -331,7 +331,7 @@ function App() {
               >
                 Privacy Policy
               </button>
-              <span className="self-center text-gray-400" aria-hidden="true">â€¢</span>
+              <span className="self-center text-gray-400" aria-hidden="true">•</span>
               <button
                 type="button"
                 onClick={() => setIsTermsOpen(true)}
@@ -341,7 +341,7 @@ function App() {
               </button>
             </div>
             <p className="mt-4 text-gray-300">
-              &copy; {new Date().getFullYear()} Legacy Notary Public. All rights reserved.
+              &copy; 2026 Legacy Notary Public. All rights reserved.
             </p>
           </div>
 

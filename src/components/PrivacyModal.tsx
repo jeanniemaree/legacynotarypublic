@@ -41,7 +41,7 @@ export const PrivacyModal = ({ isOpen, onClose }: ModalProps) => {
       <div className="bg-white rounded-3xl w-full max-h-[85vh] overflow-y-auto p-6 sm:p-8 shadow-2xl border border-gray-200 relative">
         <div className="flex justify-between items-center pb-4 border-b border-gray-200">
           <h3 id="privacy-title" className="text-xl font-bold text-primary flex items-center gap-2">
-            <Shield size={20} className="text-secondary" /> Privacy Policy
+            <Shield size={20} className="text-secondary" aria-hidden="true" /> Privacy Policy
           </h3>
           <button
             onClick={onClose}

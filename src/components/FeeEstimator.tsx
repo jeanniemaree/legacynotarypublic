@@ -395,11 +395,12 @@ export const FeeEstimator: React.FC = () => {
 
               {/* Google Places Autocomplete */}
               <div>
-                <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">
+                <label htmlFor="destination-address" className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">
                   Enter Street Address or Destination Name
                 </label>
                 <div className="relative">
                   <input
+                    id="destination-address"
                     ref={autocompleteInputRef}
                     type="text"
                     value={addressInput}
@@ -416,9 +417,10 @@ export const FeeEstimator: React.FC = () => {
               {/* City Dropdown Fallback */}
               <div className="pt-2">
                 <div className="flex items-center justify-between text-xs text-gray-300 mb-2">
-                  <span>OR Select Nearby City / Area Preset:</span>
+                  <label htmlFor="city-preset-select">OR Select Nearby City / Area Preset:</label>
                 </div>
                 <select
+                  id="city-preset-select"
                   value={selectedCity}
                   onChange={handleCitySelect}
                   className="w-full bg-black/60 text-white rounded-xl p-3.5 border border-white/20 font-medium focus:ring-2 focus:ring-secondary focus:border-transparent outline-none cursor-pointer text-sm"
@@ -509,10 +511,11 @@ export const FeeEstimator: React.FC = () => {
 
               {/* Time Window Select */}
               <div>
-                <label className="block text-sm font-semibold text-gray-200 mb-2">
+                <label htmlFor="appointment-time-select" className="block text-sm font-semibold text-gray-200 mb-2">
                   🕒 Preferred Appointment Time Window
                 </label>
                 <select
+                  id="appointment-time-select"
                   value={appointmentTime}
                   onChange={(e) => setAppointmentTime(Number(e.target.value))}
                   className="w-full bg-black/60 text-white rounded-xl p-3.5 border border-white/20 font-medium focus:ring-2 focus:ring-secondary focus:border-transparent outline-none cursor-pointer text-sm"

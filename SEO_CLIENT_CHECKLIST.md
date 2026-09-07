@@ -6,6 +6,45 @@ Complete these steps, then send Michael the **public profile URLs** so we can pa
 
 ---
 
+### 0. One Google account + email + GA4 (do this first)
+
+**Goal:** One Google login she owns that runs GBP, Analytics, Search Console, Maps, and the booking form. GitHub stays separate (no mailbox there).
+
+#### Email choice (pick one)
+
+| Option | Cost | When to use |
+|--------|------|-------------|
+| **A — Personal Gmail only** | Free | Fine to start; use for GA4 + GBP now |
+| **B — Domain email → Gmail (recommended cheap)** | Free (Cloudflare Email Routing) | Want `info@legacynotarypublic.com` that lands in her Gmail |
+| **C — Google Workspace** | ~$7+/mo | Want full Gmail for `@legacynotarypublic.com` (send + receive in Google apps) |
+
+**Recommendation for Legacy Notary:** Start with **A or B**. Buy Workspace later only if she needs branded send/receive every day. **GA4 does not require Workspace.**
+
+**If B (Cloudflare Email Routing):**
+1. Domain DNS must be on Cloudflare (or add MX/TXT records Cloudflare gives you).
+2. Email Routing → create address `info@legacynotarypublic.com` (and/or her name) → forward to her personal Gmail.
+3. Optional: in Gmail → Settings → Accounts → “Send mail as” that address (needs SPF/DKIM from Cloudflare).
+
+#### Create / confirm the Google account
+1. Use (or create) a Google account **she** controls — preferably tied to the inbox she’ll check for the business.
+2. Sign into the same account for: [business.google.com](https://business.google.com/), [analytics.google.com](https://analytics.google.com/), [search.google.com/search-console](https://search.google.com/search-console).
+3. Optional: add Michael as Admin/Editor later — do **not** share her password; use Google “Manage users” / property access.
+
+#### Create GA4 (free)
+1. Open https://analytics.google.com/ → **Admin** (gear) → **Create property**.
+2. Property name: `Legacy Notary Public`
+3. Time zone: **United States – Central** · Currency: **USD**
+4. Create a **Web** data stream → URL: `https://legacynotarypublic.com` · Stream name: `Legacy Notary Website`
+5. Copy the **Measurement ID** (`G-XXXXXXXXXX`) and text it to Michael.
+6. Michael will put it in `.env` as `VITE_GA4_MEASUREMENT_ID`, rebuild, and push (with her GitHub login).
+
+#### Google Search Console (same day as GA4)
+1. https://search.google.com/search-console → Add property → URL prefix `https://legacynotarypublic.com/`
+2. Verify (HTML tag or DNS TXT). Michael can help with the tag if needed.
+3. Optional: link GA4 ↔ Search Console in GA4 Admin → Product links.
+
+---
+
 ### 1. Google Business Profile (already live — confirm ownership)
 1. Open: https://business.google.com/
 2. Sign in with the Google account that manages **Legacy Mobile Notary Public** / Legacy Notary Public.
