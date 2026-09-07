@@ -1,6 +1,6 @@
 ﻿import { useState, useEffect } from 'react';
 import { Menu, X, Car, Building2, MapPin, PhoneCall, FileText, CheckCircle, Clock, ShieldCheck, Star } from 'lucide-react';
-import { FeeEstimator } from './components/FeeEstimator';
+import { FeeEstimatorGate } from './components/FeeEstimatorGate';
 import { ServiceAreaMatrix } from './components/ServiceAreaMatrix';
 import { FAQSection } from './components/FAQSection';
 import { ReviewsSection } from './components/ReviewsSection';
