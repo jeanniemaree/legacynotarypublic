@@ -142,29 +142,15 @@ function App() {
                 >
                   <Star size={16} className="fill-yellow-400" aria-hidden="true" /> See Google reviews
                 </a>
-                <div>â€¢ Hospital & Bedside Visits</div>
-                <div>â€¢ Contactless Tap to Pay</div>
+                <div>• Hospital & Bedside Visits</div>
+                <div>• Contactless Tap to Pay</div>
               </div>
             </div>
             
-            {/* Hero portrait - LCP is text; all headshots lazy (no fetchPriority) */}
-            <div className="lg:col-span-5 relative">
-              <div className="absolute inset-0 bg-gradient-to-tr from-secondary/50 to-purple-600/40 rounded-3xl transform rotate-3 scale-105 opacity-50 hidden lg:block" aria-hidden="true"></div>
-              {/* Compact mobile hero portrait (brand photo in first viewport; lazy so it won't fight JS/fonts) */}
-              <picture className="relative z-10 block lg:hidden max-w-[220px] mx-auto">
-                <source type="image/webp" srcSet="/images/headshot-400.webp" />
-                <img
-                  src="/images/headshot-400.jpg"
-                  alt="Jeannie Hernandez, commissioned Texas Notary Public for Legacy Notary Public, smiling in professional attire"
-                  width="400"
-                  height="500"
-                  loading="lazy"
-                  decoding="async"
-                  className="w-full rounded-3xl shadow-2xl border-4 border-white/20 object-cover aspect-[4/5]"
-                />
-              </picture>
-              {/* Desktop hero â€” responsive WebP + JPG fallback */}
-              <picture className="relative z-10 hidden lg:block">
+            {/* Single hero portrait (one image only — mobile + desktop share one picture) */}
+            <div className="lg:col-span-5 relative hidden lg:block">
+              <div className="absolute inset-0 bg-gradient-to-tr from-secondary/50 to-purple-600/40 rounded-3xl transform rotate-3 scale-105 opacity-50" aria-hidden="true"></div>
+              <picture className="relative z-10 block">
                 <source type="image/webp" srcSet="/images/headshot-800.webp" />
                 <img
                   src="/images/headshot-800.jpg"
@@ -200,7 +186,7 @@ function App() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               
-              {/* Mobile about - below-fold; lazy WebP + JPG (no fetchPriority; LCP is text) */}
+              {/* One headshot only — shown on mobile here; desktop uses hero portrait */}
               <div className="lg:hidden">
                 <picture>
                   <source type="image/webp" srcSet="/images/headshot-400.webp" />
@@ -215,7 +201,7 @@ function App() {
                   />
                 </picture>
               </div>
-              
+
               <div className="space-y-6">
                 <span className="text-primary font-bold text-xs uppercase tracking-widest bg-primary/10 px-3 py-1 rounded-full">
                   About Legacy Notary Public
