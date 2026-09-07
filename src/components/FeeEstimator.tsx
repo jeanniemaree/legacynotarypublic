@@ -40,8 +40,8 @@ export const FeeEstimator: React.FC = () => {
   const [witnessService, setWitnessService] = useState<boolean>(false); // +$25
   const [jailVisit, setJailVisit] = useState<boolean>(false); // +$35
 
-  const bookingUrl =
-    'https://docs.google.com/forms/d/e/1FAIpQLSeFGHvwVwHGdY4qKWPtPrZry7vl7EoU-xR6Vp96HBEdaibV_g/viewform';
+  const bookingUrl = siteConfig.bookingUrl;
+  const [mapsRequested, setMapsRequested] = useState(false);
 
   // Pre-defined city distance mapping for instant manual selection / fallback
   const cityPresets: Record<string, { label: string; miles: number; fee: number | 'quote' }> = {
@@ -66,9 +66,15 @@ export const FeeEstimator: React.FC = () => {
     return 'quote';
   };
 
-  // Load Google Maps JavaScript SDK dynamically
+  // Load Google Maps only after the address field is focused (keeps Maps off the critical path)
   useEffect(() => {
-    const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || 'AIzaSyA-fWs4zJOxZ5AVq56AVGB5yLmvnnFx53w';
+    if (!mapsRequested) return;
+
+    const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string | undefined;
+    if (!apiKey) {
+      setMapsError('Address search needs a Maps key. Use a city preset below for an instant estimate.');
+      return;
+    }
 
     if ((window as any).google && (window as any).google.maps) {
       initGoogleMaps();
@@ -76,13 +82,19 @@ export const FeeEstimator: React.FC = () => {
     }
 
     const scriptId = 'google-maps-js-sdk';
-    if (document.getElementById(scriptId)) return;
+    const existing = document.getElementById(scriptId) as HTMLScriptElement | null;
+    if (existing) {
+      if ((window as any).google?.maps) initGoogleMaps();
+      else existing.addEventListener('load', () => initGoogleMaps(), { once: true });
+      return;
+    }
 
     const script = document.createElement('script');
     script.id = scriptId;
     script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
     script.async = true;
     script.defer = true;
+    script.setAttribute('fetchpriority', 'low');
     script.onload = () => {
       initGoogleMaps();
     };
@@ -90,7 +102,7 @@ export const FeeEstimator: React.FC = () => {
       setMapsError('Could not load Google Maps. You can still select your city manually below!');
     };
     document.body.appendChild(script);
-  }, []);
+  }, [mapsRequested]);
 
   const initGoogleMaps = () => {
     try {
@@ -254,16 +266,15 @@ export const FeeEstimator: React.FC = () => {
 
   return (
     <section id="estimator" className="py-16 sm:py-24 bg-gradient-to-b from-gray-950 via-primary to-gray-950 text-white relative overflow-hidden">
-      {/* Background Decorative Glows */}
-      <div className="absolute top-1/4 left-0 w-96 h-96 bg-secondary/10 rounded-full blur-[120px] pointer-events-none"></div>
-      <div className="absolute bottom-10 right-0 w-96 h-96 bg-purple-900/20 rounded-full blur-[120px] pointer-events-none"></div>
+      {/* Light gradient atmosphere (no expensive filter:blur orbs) */}
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_20%_30%,rgba(234,179,8,0.08),transparent_45%),radial-gradient(ellipse_at_90%_80%,rgba(88,28,135,0.25),transparent_50%)]"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 bg-secondary/20 border border-secondary/40 text-secondary px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wider mb-4 shadow-sm backdrop-blur-md">
-            <Calculator size={16} /> Instant Fee & Travel Calculator
+          <div className="inline-flex items-center gap-2 bg-secondary/20 border border-amber-200/40 text-amber-200 px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wider mb-4 shadow-sm">
+            <Calculator size={16} aria-hidden="true" /> Instant Fee & Travel Calculator
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
             Transparent Pricing & Instant Quote
@@ -274,9 +285,9 @@ export const FeeEstimator: React.FC = () => {
         </div>
 
         {/* --- SECTION 1: TRANSPARENT PRICING CARD (Matching Published Sheet) --- */}
-        <div className="mb-14 bg-white/5 border border-white/15 backdrop-blur-xl rounded-3xl p-6 sm:p-10 shadow-2xl">
-          <h3 className="text-xl sm:text-2xl font-bold text-secondary flex items-center gap-2 mb-6">
-            <ShieldCheck size={24} className="text-secondary" /> Official Transparent Pricing Sheet
+        <div className="mb-14 bg-white/[0.07] border border-white/15 rounded-3xl p-6 sm:p-10 shadow-2xl">
+          <h3 className="text-xl sm:text-2xl font-bold text-amber-200 flex items-center gap-2 mb-6">
+            <ShieldCheck size={24} className="text-amber-200" aria-hidden="true" /> Official Transparent Pricing Sheet
           </h3>
 
           <div className="grid md:grid-cols-2 gap-8">
@@ -288,11 +299,11 @@ export const FeeEstimator: React.FC = () => {
               <ul className="space-y-2.5 text-sm text-gray-200">
                 <li className="flex justify-between">
                   <span>First notarized signature</span>
-                  <strong className="text-secondary font-semibold">$10</strong>
+                  <strong className="text-amber-200 font-semibold">$10</strong>
                 </li>
                 <li className="flex justify-between">
                   <span>Each additional signature</span>
-                  <strong className="text-secondary font-semibold">$1</strong>
+                  <strong className="text-amber-200 font-semibold">$1</strong>
                 </li>
                 <li className="border-t border-white/10 pt-2.5 flex justify-between">
                   <span>After Hours (5:00 PM – 9:00 PM)</span>
@@ -318,9 +329,9 @@ export const FeeEstimator: React.FC = () => {
                   <span>Jail / Prison Visit</span>
                   <strong className="text-white">+$35</strong>
                 </li>
-                <li className="flex justify-between text-xs text-gray-400 pt-1">
+                <li className="flex justify-between text-xs text-gray-300 pt-1">
                   <span>Hospital / Nursing Home Visit</span>
-                  <span className="italic text-secondary">Flexible / Contact for quote</span>
+                  <span className="italic text-amber-200">Flexible / Contact for quote</span>
                 </li>
               </ul>
             </div>
@@ -331,35 +342,35 @@ export const FeeEstimator: React.FC = () => {
                 <h4 className="font-bold text-white text-lg flex items-center gap-2 border-b border-white/10 pb-3">
                   <span>🏎️ Mobile Travel Fees</span>
                 </h4>
-                <p className="text-xs text-gray-400 mt-2 mb-4">
+                <p className="text-xs text-gray-300 mt-2 mb-4">
                   Based on one-way mileage from <strong>Buc-ee's</strong> (598 TX-332, Lake Jackson, TX 77566):
                 </p>
                 <ul className="space-y-2.5 text-sm text-gray-200">
                   <li className="flex justify-between">
                     <span>0 – 5 miles</span>
-                    <strong className="text-secondary font-bold">$10</strong>
+                    <strong className="text-amber-200 font-bold">$10</strong>
                   </li>
                   <li className="flex justify-between">
                     <span>5 – 10 miles</span>
-                    <strong className="text-secondary font-bold">$15</strong>
+                    <strong className="text-amber-200 font-bold">$15</strong>
                   </li>
                   <li className="flex justify-between">
                     <span>10 – 20 miles</span>
-                    <strong className="text-secondary font-bold">$20</strong>
+                    <strong className="text-amber-200 font-bold">$20</strong>
                   </li>
                   <li className="flex justify-between">
                     <span>20 – 30 miles</span>
-                    <strong className="text-secondary font-bold">$30</strong>
+                    <strong className="text-amber-200 font-bold">$30</strong>
                   </li>
                   <li className="flex justify-between pt-1 border-t border-white/10">
                     <span>30+ miles</span>
-                    <strong className="text-secondary uppercase text-xs tracking-wider">Request Quote</strong>
+                    <strong className="text-amber-200 uppercase text-xs tracking-wider">Request Quote</strong>
                   </li>
                 </ul>
               </div>
 
               <div className="bg-secondary/10 border border-secondary/30 p-3.5 rounded-xl text-xs text-gray-300">
-                <span className="font-semibold text-secondary block mb-1">🚗 Local Travel Guarantee</span>
+                <span className="font-semibold text-amber-200 block mb-1">🚗 Local Travel Guarantee</span>
                 Travel fees are calculated transparently prior to departure. No surprise add-on travel costs.
               </div>
             </div>
@@ -367,7 +378,7 @@ export const FeeEstimator: React.FC = () => {
         </div>
 
         {/* --- SECTION 2: INTERACTIVE CALCULATOR ENGINE --- */}
-        <div id="quote-calculator" className="bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl p-6 sm:p-10 shadow-2xl grid lg:grid-cols-12 gap-10">
+        <div id="quote-calculator" className="bg-white/[0.12] border border-white/20 rounded-3xl p-6 sm:p-10 shadow-2xl grid lg:grid-cols-12 gap-10">
           
           {/* Controls Column */}
           <div className="lg:col-span-7 space-y-8">
@@ -379,7 +390,7 @@ export const FeeEstimator: React.FC = () => {
                   <span className="w-7 h-7 rounded-full bg-secondary text-primary font-extrabold text-sm flex items-center justify-center">1</span>
                   Step 1: Calculate Travel Distance
                 </h3>
-                <span className="text-xs text-secondary font-medium">Origin: Buc-ee's Lake Jackson</span>
+                <span className="text-xs text-amber-200 font-medium">Origin: Buc-ee's Lake Jackson</span>
               </div>
 
               {/* Google Places Autocomplete */}
@@ -393,16 +404,18 @@ export const FeeEstimator: React.FC = () => {
                     type="text"
                     value={addressInput}
                     onChange={(e) => setAddressInput(e.target.value)}
+                    onFocus={() => setMapsRequested(true)}
                     placeholder="Search address (e.g. 123 Main St, Angleton, TX)..."
-                    className="w-full bg-black/60 text-white placeholder-gray-400 rounded-xl p-3.5 pl-11 border border-white/20 font-medium focus:ring-2 focus:ring-secondary focus:border-transparent outline-none"
+                    className="w-full bg-black/60 text-white placeholder-gray-300 rounded-xl p-3.5 pl-11 border border-white/20 font-medium focus:ring-2 focus:ring-secondary focus:border-transparent outline-none"
+                    autoComplete="street-address"
                   />
-                  <MapPin className="absolute left-3.5 top-3.5 text-secondary" size={20} />
+                  <MapPin className="absolute left-3.5 top-3.5 text-amber-200" size={20} aria-hidden="true" />
                 </div>
               </div>
 
               {/* City Dropdown Fallback */}
               <div className="pt-2">
-                <div className="flex items-center justify-between text-xs text-gray-400 mb-2">
+                <div className="flex items-center justify-between text-xs text-gray-300 mb-2">
                   <span>OR Select Nearby City / Area Preset:</span>
                 </div>
                 <select
@@ -424,10 +437,10 @@ export const FeeEstimator: React.FC = () => {
                 <div className="mt-4 p-4 bg-secondary/15 border border-secondary/40 rounded-xl text-sm space-y-2 animate-fadeIn">
                   <div className="flex justify-between items-center text-white font-semibold">
                     <span className="flex items-center gap-1.5">
-                      <Navigation size={16} className="text-secondary" />
+                      <Navigation size={16} className="text-amber-200" aria-hidden="true" />
                       {calcResult.formattedAddress}
                     </span>
-                    <span className="text-secondary font-bold text-base">
+                    <span className="text-amber-200 font-bold text-base">
                       {calcResult.travelFee === 'quote' ? 'Request Quote' : `$${calcResult.travelFee} Travel Fee`}
                     </span>
                   </div>
@@ -476,7 +489,7 @@ export const FeeEstimator: React.FC = () => {
                     −
                   </button>
                   <div className="flex-1 text-center">
-                    <span className="font-bold text-3xl text-secondary">{signatures}</span>
+                    <span className="font-bold text-3xl text-amber-200">{signatures}</span>
                     <span className="text-xs text-gray-300 block font-medium">
                       {signatures === 1 ? 'Notarized Signature' : 'Notarized Signatures'}
                     </span>
@@ -489,7 +502,7 @@ export const FeeEstimator: React.FC = () => {
                     +
                   </button>
                 </div>
-                <p className="text-xs text-gray-400 mt-2">
+                <p className="text-xs text-gray-300 mt-2">
                   First signature is $10. Each additional signature is $1 (Texas Statutory Rate).
                 </p>
               </div>
@@ -533,7 +546,7 @@ export const FeeEstimator: React.FC = () => {
                     />
                     <div className="text-xs">
                       <span className="font-semibold block text-sm text-white">🖨️ Printing Documents</span>
-                      <span className="text-gray-400">+$10</span>
+                      <span className="text-gray-300">+$10</span>
                     </div>
                   </label>
 
@@ -547,7 +560,7 @@ export const FeeEstimator: React.FC = () => {
                     />
                     <div className="text-xs">
                       <span className="font-semibold block text-sm text-white">📄 Scan Backs</span>
-                      <span className="text-gray-400">+$10</span>
+                      <span className="text-gray-300">+$10</span>
                     </div>
                   </label>
 
@@ -561,7 +574,7 @@ export const FeeEstimator: React.FC = () => {
                     />
                     <div className="text-xs">
                       <span className="font-semibold block text-sm text-white">👥 Witness Service</span>
-                      <span className="text-gray-400">+$25</span>
+                      <span className="text-gray-300">+$25</span>
                     </div>
                   </label>
 
@@ -575,12 +588,12 @@ export const FeeEstimator: React.FC = () => {
                     />
                     <div className="text-xs">
                       <span className="font-semibold block text-sm text-white">🔒 Jail / Prison Visit</span>
-                      <span className="text-gray-400">+$35</span>
+                      <span className="text-gray-300">+$35</span>
                     </div>
                   </label>
                 </div>
 
-                <p className="text-xs text-gray-400 italic pt-1">
+                <p className="text-xs text-gray-300 italic pt-1">
                   *If your document requires more than one witness, your final quote may be adjusted prior to appointment.
                 </p>
               </div>
@@ -592,17 +605,17 @@ export const FeeEstimator: React.FC = () => {
           {/* STEP 3: ESTIMATE SUMMARY & RECEIPT */}
           <div className="lg:col-span-5 bg-gradient-to-br from-primary via-purple-950 to-gray-950 p-6 sm:p-8 rounded-3xl border border-secondary/40 shadow-2xl flex flex-col justify-between space-y-6 relative overflow-hidden">
             
-            <div className="absolute -top-12 -right-12 w-40 h-40 bg-secondary/20 rounded-full blur-2xl pointer-events-none"></div>
+            <div className="absolute -top-12 -right-12 w-40 h-40 rounded-full pointer-events-none bg-[radial-gradient(circle,rgba(234,179,8,0.22),transparent_70%)]"></div>
 
             <div>
               <div className="flex items-center justify-between border-b border-white/15 pb-4">
                 <div>
-                  <span className="text-xs uppercase tracking-widest text-secondary font-extrabold block">Step 3</span>
+                  <span className="text-xs uppercase tracking-widest text-amber-200 font-extrabold block">Step 3</span>
                   <h3 className="text-2xl font-bold text-white flex items-center gap-2">
                     🧾 Estimate Summary
                   </h3>
                 </div>
-                <Sparkles className="text-secondary" size={24} />
+                <Sparkles className="text-amber-200" size={24} aria-hidden="true" />
               </div>
 
               {/* Itemized Line Items */}
@@ -680,21 +693,21 @@ export const FeeEstimator: React.FC = () => {
 
               {/* Total Display Box */}
               <div className="mt-8 p-5 bg-black/50 rounded-2xl border border-secondary/40 text-center shadow-inner">
-                <p className="text-xs uppercase tracking-widest text-gray-400 font-semibold mb-1">
+                <p className="text-xs uppercase tracking-widest text-gray-300 font-semibold mb-1">
                   TOTAL ESTIMATE
                 </p>
 
                 {isCustomTravelQuote ? (
-                  <div className="text-2xl font-extrabold text-secondary py-2">
+                  <div className="text-2xl font-extrabold text-amber-200 py-2">
                     Custom Travel Quote Needed
                   </div>
                 ) : (
-                  <div className="text-5xl font-extrabold text-secondary tracking-tight">
+                  <div className="text-5xl font-extrabold text-amber-200 tracking-tight">
                     ${grandTotal}.00
                   </div>
                 )}
 
-                <p className="text-[11px] text-gray-400 mt-2">
+                <p className="text-[11px] text-gray-300 mt-2">
                   Texas notary fees and travel fees included.
                 </p>
               </div>
@@ -720,13 +733,13 @@ export const FeeEstimator: React.FC = () => {
                 <PhoneCall size={16} /> Text Quote to {siteConfig.ownerName.split(' ')[0]}
               </a>
 
-              <p className="text-[11px] text-center text-gray-400 pt-1">
+              <p className="text-[11px] text-center text-gray-300 pt-1">
                 You'll choose your appointment date and time on the next screen.
               </p>
             </div>
 
             <div className="flex items-center gap-2 text-[11px] text-gray-300 pt-3 border-t border-white/10">
-              <ShieldCheck size={14} className="text-secondary shrink-0" />
+              <ShieldCheck size={14} className="text-amber-200 shrink-0" aria-hidden="true" />
               <span>Tap to Pay accepted (Credit/Debit, Zelle, Cash)</span>
             </div>
 

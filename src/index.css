@@ -12,17 +12,13 @@ body {
   color: #1f2937;
 }
 
-/* Glassmorphism utility */
+/* Solid frosted panels — avoid backdrop-filter paint cost on critical path */
 .glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.14);
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .glass-dark {
-  background: rgba(59, 7, 100, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(59, 7, 100, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }

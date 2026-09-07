@@ -71,8 +71,8 @@ export const ServiceAreaMatrix = () => {
         <div className="bg-primary text-white rounded-3xl p-8 lg:p-12 shadow-xl grid md:grid-cols-3 gap-8 border border-purple-800">
           {venueTypes.map((v, i) => (
             <div key={i} className="flex gap-4 items-start">
-              <div className="w-12 h-12 rounded-xl bg-secondary/20 border border-secondary/40 flex items-center justify-center shrink-0 text-secondary">
-                <v.icon size={24} />
+              <div className="w-12 h-12 rounded-xl bg-secondary/20 border border-amber-200/40 flex items-center justify-center shrink-0 text-amber-200">
+                <v.icon size={24} aria-hidden="true" />
               </div>
               <div>
                 <h4 className="font-bold text-lg text-white mb-1">{v.title}</h4>

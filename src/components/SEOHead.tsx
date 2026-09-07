@@ -88,32 +88,14 @@ export const SEOHead = () => {
       {
         "@type": "FAQPage",
         "@id": `${siteConfig.domain}/#faq`,
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "What identification is required for a Texas notarization?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "All signers must present a valid, unexpired government-issued photo ID such as a Texas Driver License, State ID card, US Passport, or Military ID."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "What are the notary fees in Texas?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Texas state law sets notary fees at $10 for the first signature and $1 for each additional signature. Travel and after-hours convenience fees are separate."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Do you travel to hospitals and nursing homes?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes, Legacy Notary Public specializes in mobile hospital and nursing facility visits across Brazoria, Matagorda, Galveston, and Harris Counties."
-            }
+        "mainEntity": siteConfig.faqs.map((faq) => ({
+          "@type": "Question",
+          "name": faq.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": faq.answer
           }
-        ]
+        }))
       }
     ]
   };
@@ -134,6 +116,7 @@ export const SEOHead = () => {
       <meta property="og:image:alt" content={`${siteConfig.ownerName} - ${siteConfig.ownerTitle}`} />
       <meta property="og:url" content={`${siteConfig.domain}/`} />
       <meta property="og:type" content="website" />
+      <meta property="og:site_name" content={siteConfig.businessName} />
       <meta property="og:locale" content="en_US" />
 
       {/* Twitter Cards */}
