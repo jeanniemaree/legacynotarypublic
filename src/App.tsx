@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Menu, X, Car, Building2, MapPin, PhoneCall, FileText, CheckCircle, Clock, ShieldCheck, Star } from 'lucide-react';
 import { SEOHead } from './components/SEOHead';
 import { FeeEstimator } from './components/FeeEstimator';
@@ -98,7 +98,7 @@ function App() {
 
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-12 items-center">
             
-            <div className="lg:col-span-7 space-y-8 animate-fade-in-up">
+            <div className="lg:col-span-7 space-y-8">
               <div className="inline-flex items-center gap-2 border border-amber-200/50 bg-secondary/10 rounded-full px-4 py-1.5 text-amber-200 text-xs sm:text-sm font-semibold tracking-wide uppercase">
                 <ShieldCheck size={16} aria-hidden="true" /> Commissioned Texas Mobile Notary
               </div>
@@ -132,7 +132,7 @@ function App() {
                 </a>
               </div>
 
-              {/* Quick Trust Badges — no fabricated AggregateRating; point to verified GBP */}
+              {/* Quick Trust Badges â€” no fabricated AggregateRating; point to verified GBP */}
               <div className="pt-6 border-t border-white/10 flex flex-wrap items-center gap-6 text-xs sm:text-sm text-gray-300">
                 <a
                   href={siteConfig.sameAs[0]}
@@ -142,23 +142,40 @@ function App() {
                 >
                   <Star size={16} className="fill-yellow-400" aria-hidden="true" /> See Google reviews
                 </a>
-                <div>• Hospital & Bedside Visits</div>
-                <div>• Contactless Tap to Pay</div>
+                <div>â€¢ Hospital & Bedside Visits</div>
+                <div>â€¢ Contactless Tap to Pay</div>
               </div>
             </div>
             
-            {/* Desktop Hero Image — not the mobile LCP; lazy so it doesn't compete on mobile PSI */}
-            <div className="lg:col-span-5 relative hidden lg:block">
-              <div className="absolute inset-0 bg-gradient-to-tr from-secondary/50 to-purple-600/40 rounded-3xl transform rotate-3 scale-105 opacity-50"></div>
-              <img 
-                src="/images/Headshot.jpeg" 
-                alt="Jeannie Hernandez, commissioned Texas Notary Public for Legacy Notary Public, smiling in professional attire"
-                width="400"
-                height="500"
-                loading="lazy"
-                decoding="async"
-                className="relative z-10 w-full max-w-md mx-auto rounded-3xl shadow-2xl border-4 border-white/20 object-cover aspect-[4/5]"
-              />
+            {/* Hero portrait - LCP is text; all headshots lazy (no fetchPriority) */}
+            <div className="lg:col-span-5 relative">
+              <div className="absolute inset-0 bg-gradient-to-tr from-secondary/50 to-purple-600/40 rounded-3xl transform rotate-3 scale-105 opacity-50 hidden lg:block" aria-hidden="true"></div>
+              {/* Compact mobile hero portrait (brand photo in first viewport; lazy so it won't fight JS/fonts) */}
+              <picture className="relative z-10 block lg:hidden max-w-[220px] mx-auto">
+                <source type="image/webp" srcSet="/images/headshot-400.webp" />
+                <img
+                  src="/images/headshot-400.jpg"
+                  alt="Jeannie Hernandez, commissioned Texas Notary Public for Legacy Notary Public, smiling in professional attire"
+                  width="400"
+                  height="500"
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full rounded-3xl shadow-2xl border-4 border-white/20 object-cover aspect-[4/5]"
+                />
+              </picture>
+              {/* Desktop hero â€” responsive WebP + JPG fallback */}
+              <picture className="relative z-10 hidden lg:block">
+                <source type="image/webp" srcSet="/images/headshot-800.webp" />
+                <img
+                  src="/images/headshot-800.jpg"
+                  alt="Jeannie Hernandez, commissioned Texas Notary Public for Legacy Notary Public, smiling in professional attire"
+                  width="800"
+                  height="1000"
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full max-w-md mx-auto rounded-3xl shadow-2xl border-4 border-white/20 object-cover aspect-[4/5]"
+                />
+              </picture>
             </div>
 
           </div>
@@ -183,17 +200,20 @@ function App() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               
-              {/* Mobile LCP candidate — sole fetchPriority=high image */}
+              {/* Mobile about - below-fold; lazy WebP + JPG (no fetchPriority; LCP is text) */}
               <div className="lg:hidden">
-                <img 
-                  src="/images/Headshot.jpeg" 
-                  alt="Jeannie Hernandez, commissioned Texas Notary Public for Legacy Notary Public, smiling in professional attire"
-                  width="400"
-                  height="500"
-                  fetchPriority="high"
-                  decoding="async"
-                  className="w-full max-w-sm mx-auto rounded-3xl shadow-xl border-2 border-gray-100 object-cover aspect-[4/5]"
-                />
+                <picture>
+                  <source type="image/webp" srcSet="/images/headshot-400.webp" />
+                  <img
+                    src="/images/headshot-400.jpg"
+                    alt="Jeannie Hernandez, commissioned Texas Notary Public for Legacy Notary Public, smiling in professional attire"
+                    width="400"
+                    height="500"
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full max-w-sm mx-auto rounded-3xl shadow-xl border-2 border-gray-100 object-cover aspect-[4/5]"
+                  />
+                </picture>
               </div>
               
               <div className="space-y-6">
@@ -263,7 +283,7 @@ function App() {
               ].map((s, i) => (
                 <div key={i} className="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all border border-gray-200/80 group">
                   <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
-                    <s.icon className="text-primary group-hover:text-primary/80 transition-colors" size={28} aria-hidden="true" />
+                    <s.icon className="text-primary group-hover:text-white transition-colors" size={28} aria-hidden="true" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">{s.title}</h3>
                   <p className="text-gray-600 leading-relaxed">{s.desc}</p>
@@ -325,7 +345,7 @@ function App() {
               >
                 Privacy Policy
               </button>
-              <span className="self-center text-gray-400" aria-hidden="true">•</span>
+              <span className="self-center text-gray-400" aria-hidden="true">â€¢</span>
               <button
                 type="button"
                 onClick={() => setIsTermsOpen(true)}

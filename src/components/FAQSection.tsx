@@ -12,7 +12,7 @@ export const FAQSection = () => {
         
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wider mb-4">
-            <HelpCircle size={16} /> Frequently Asked Questions
+            <HelpCircle size={16} aria-hidden="true" /> Frequently Asked Questions
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-primary tracking-tight">
             Clear Answers & Guidance

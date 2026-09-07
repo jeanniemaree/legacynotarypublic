@@ -12,7 +12,7 @@ export default {
         accent: '#d8b4fe'
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
       }
     },
   },

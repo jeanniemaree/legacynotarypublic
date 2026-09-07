@@ -5,16 +5,12 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#3b0764" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" />
-    
+
     <title>Legacy Notary Public | Texas Mobile Notary Services</title>
     <meta name="description" content="Professional mobile notary serving Brazoria, Matagorda, Galveston, and Harris Counties. Travel to your home, hospital, or office. Call (979) 529-1312." />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://legacynotarypublic.com/" />
-    
+
     <!-- OpenGraph / Social Metadata -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Legacy Notary Public" />
@@ -32,6 +28,17 @@
     <meta name="twitter:title" content="Legacy Notary Public | Texas Mobile Notary Services" />
     <meta name="twitter:description" content="Professional mobile notary serving Brazoria, Matagorda, Galveston, and Harris Counties. Travel to your home, hospital, or office. Call (979) 529-1312." />
     <meta name="twitter:image" content="https://legacynotarypublic.com/images/Headshot.jpeg" />
+
+    <!-- Critical above-the-fold CSS: paints LCP text before React hydrates #root -->
+    <style>
+      .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}
+      body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:#fafafa;color:#1f2937}
+      #prerender-hero{background:#3b0764;color:#fff;padding:8rem 1.25rem 4rem;min-height:70vh;box-sizing:border-box}
+      #prerender-hero .brand{font-size:0.875rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#fde68a;margin:0 0 1rem}
+      #prerender-hero h1{font-size:clamp(2rem,6vw,3.75rem);font-weight:800;line-height:1.1;margin:0 0 1.25rem;max-width:40rem}
+      #prerender-hero p{font-size:clamp(1.05rem,2.5vw,1.25rem);line-height:1.6;color:#fff;max-width:36rem;margin:0 0 1.5rem}
+      #prerender-hero .cta{display:inline-block;margin-right:1rem;margin-bottom:0.5rem;color:#fde68a;font-weight:700;text-decoration:underline}
+    </style>
 
     <!-- Schema.org JSON-LD Structured Data -->
     <script type="application/ld+json">
@@ -172,19 +179,25 @@
       ]
     }
     </script>
-    <script type="module" crossorigin src="/assets/index-nHz1mRtR.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-rrpvuOnP.css">
+    <script type="module" crossorigin src="/assets/index-DfLivi78.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-D_qm4yhn.css">
   </head>
   <body class="bg-gray-50 text-gray-800 antialiased selection:bg-secondary selection:text-primary">
-    <!-- Inline sr-only so crawler shell stays hidden before Tailwind CSS loads -->
-    <style>
-      .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}
-    </style>
     <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:p-4 focus:bg-secondary focus:text-primary focus:font-bold">
       Skip to main content
     </a>
-    <!-- React mounts here and replaces #root children; static crawl content stays as siblings -->
-    <div id="root"></div>
+    <!-- Visible prerender hero: paints LCP text before React replaces #root -->
+    <div id="root">
+      <section id="prerender-hero" aria-label="Legacy Notary Public">
+        <p class="brand">Legacy Notary</p>
+        <h1>Protecting Signatures. Preserving Legacies.</h1>
+        <p>Professional mobile notary services serving Brazoria, Matagorda, Galveston, and Harris Counties. I travel directly to your home, workplace, hospital room, nursing facility, or public meeting place.</p>
+        <p>
+          <a class="cta" href="https://docs.google.com/forms/d/e/1FAIpQLSeFGHvwVwHGdY4qKWPtPrZry7vl7EoU-xR6Vp96HBEdaibV_g/viewform">Book Appointment</a>
+          <a class="cta" href="tel:+19795291312">Call (979) 529-1312</a>
+        </p>
+      </section>
+    </div>
 
     <!-- Agentic / no-JS: visible when scripts are disabled -->
     <noscript>
@@ -216,5 +229,6 @@
       <h3>Do you travel to hospitals, nursing homes, and rehab centers?</h3>
       <p>Yes. Jeannie Hernandez provides compassionate bedside mobile notarizations directly in hospital rooms, assisted living facilities, and rehabilitation centers across Brazoria, Matagorda, Galveston, and Harris Counties.</p>
     </section>
+
   </body>
 </html>

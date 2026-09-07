@@ -44,7 +44,7 @@ export const TermsModal = ({ isOpen, onClose }: ModalProps) => {
           </h3>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 p-1.5 rounded-full hover:bg-gray-100 transition-colors"
+            className="text-gray-600 hover:text-gray-800 p-1.5 rounded-full hover:bg-gray-100 transition-colors"
             aria-label="Close dialog"
           >
             <X size={24} />
