@@ -280,8 +280,8 @@ function App() {
           </div>
         </section>
 
-        {/* Interactive Fee Estimator */}
-        <FeeEstimator />
+        {/* Interactive Fee Estimator (hydrates in after first paint) */}
+        <FeeEstimatorGate />
 
         {/* 4-County Service Area Matrix */}
         <ServiceAreaMatrix />
