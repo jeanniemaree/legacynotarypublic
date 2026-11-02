@@ -1,6 +1,6 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, X, Car, Building2, MapPin, PhoneCall, FileText, CheckCircle, Clock, ShieldCheck, Star } from 'lucide-react';
-import { FeeEstimatorGate } from './components/FeeEstimatorGate';
+import { FeeEstimator } from './components/FeeEstimator';
 import { ServiceAreaMatrix } from './components/ServiceAreaMatrix';
 import { FAQSection } from './components/FAQSection';
 import { ReviewsSection } from './components/ReviewsSection';
@@ -148,7 +148,7 @@ function App() {
             </div>
             
             {/* Single hero portrait (one image only — mobile + desktop share one picture) */}
-            <div className="lg:col-span-5 relative hidden lg:block">
+            <div className="lg:col-span-5 relative flex justify-center mt-6 lg:mt-0">
               <div className="absolute inset-0 bg-gradient-to-tr from-secondary/50 to-purple-600/40 rounded-3xl transform rotate-3 scale-105 opacity-50" aria-hidden="true"></div>
               <picture className="relative z-10 block">
                 <source type="image/webp" srcSet="/images/headshot-800.webp" />
@@ -187,7 +187,7 @@ function App() {
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               
               {/* One headshot only — shown on mobile here; desktop uses hero portrait */}
-              <div className="lg:hidden">
+              <div className="flex justify-center">
                 <picture>
                   <source type="image/webp" srcSet="/images/headshot-400.webp" />
                   <img
@@ -281,7 +281,7 @@ function App() {
         </section>
 
         {/* Interactive Fee Estimator (hydrates in after first paint) */}
-        <FeeEstimatorGate />
+        <FeeEstimator />
 
         {/* 4-County Service Area Matrix */}
         <ServiceAreaMatrix />
